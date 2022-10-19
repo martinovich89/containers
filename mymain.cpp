@@ -25,7 +25,7 @@ int main(void)
 
 	std::cout << my_vector0.max_size() << " | " << (size_t)~0 / (sizeof(short) * 2) << std::endl;
 	std::cout << my_vector1.max_size() << " | " << (size_t)~0 / (sizeof(int) * 2) << std::endl;
-	std::cout << my_vector2.max_size() << " | " << (size_t)~0 / (sizeof(size_t) * 2) << std::endl;
+	std::cout << my_vector2.max_size() << " | " << (size_t)~0 / (sizeof(short) * 2) << std::endl;
 	std::cout << my_vector3.max_size() << " | " << (size_t)~0 / (sizeof(t_max_size_test) * 2) << std::endl;
 
 	ft::vector<short>::iterator iter;
@@ -36,7 +36,7 @@ int main(void)
 	my_vector1.push_back(42);
 	ft::vector<int>::reverse_iterator riter;
 	riter = my_vector1.rbegin();
-	std::cout << *riter << std::endl;
+//	std::cout << *riter << std::endl;
 
 	ft::vector<short>::const_iterator citer;
 	citer = my_vector2.begin();

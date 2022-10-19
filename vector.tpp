@@ -5,6 +5,12 @@ namespace ft
 	//CONSTRUCTORS
 
 	template < class T, class Alloc >
+	vector<T, Alloc>::~vector()
+	{
+		_alloc.deallocate(_data, _capacity);
+	}
+
+	template < class T, class Alloc >
 	vector<T, Alloc>::vector(const typename vector<T, Alloc>::allocator_type &alloc)
 	:	_alloc(alloc),
 		_capacity(0),

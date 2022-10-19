@@ -38,6 +38,7 @@ namespace ft
 		vector(InputIterator first, InputIterator last,
 			   const allocator_type &alloc = allocator_type());
 		vector(const vector &x);
+		~vector();
 
 		// CAPACITY
 		size_type size() const;
