@@ -26,6 +26,7 @@ namespace ft
 	vector_iter<T>::vector_iter(T *ptr)
 	: vector_const_iter<T>(ptr)
 	{
+
 	}
 
 	template <class T>

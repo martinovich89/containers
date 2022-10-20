@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <sstream>
 #include "iterator_traits.hpp"
+#include "vector_iterator.hpp"
 
 namespace ft
 {
@@ -33,11 +34,15 @@ namespace ft
 
 		}
 
-		reverse_iterator(const iter &other)
+		reverse_iterator(const iter &x)
+		{
+			_iter = x;
+		}
+
+		reverse_iterator(const reverse_iterator &other)
 		{
 			*this = other;
 		}
-
 
 		reverse_iterator &operator++() {
 			_iter--;
@@ -55,8 +60,7 @@ namespace ft
 
 		reverse_iterator &operator=(const reverse_iterator &other)
 		{
-			std::cout << "KEK" << std::endl;
-			_iter = other._iter;
+			_iter = &other.operator*();
 			return (*this);
 		}
 
