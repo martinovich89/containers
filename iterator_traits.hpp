@@ -26,10 +26,8 @@ namespace ft
 	{
 		typedef std::ptrdiff_t							difference_type;
 		typedef T										value_type;
-		typedef T*										ptr;
-		typedef T&										ref;
+		typedef T*										pointer;
+		typedef T&										reference;
 		typedef std::random_access_iterator_tag			iterator_category;
 	};
-
-	
 }

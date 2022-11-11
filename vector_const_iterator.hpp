@@ -44,11 +44,11 @@ namespace ft
 	template <class T>
 	ptrdiff_t	operator-(const vector_const_iter<T> &lhs, const vector_const_iter<T> &rhs);
 	template <class T>
-	vector_const_iter<T> &operator-(vector_const_iter<T> &iter, const int n);
+	vector_const_iter<T> operator-(const vector_const_iter<T> &iter, const int n);
 	template <class T>
-	vector_const_iter<T> &operator+(vector_const_iter<T> &iter, const int n);
+	vector_const_iter<T> operator+(const vector_const_iter<T> &iter, const int n);
 	template <class T>
-	vector_const_iter<T> &operator+(const int n, vector_const_iter<T> &iter);
+	vector_const_iter<T> operator+(const int n, const vector_const_iter<T> &iter);
 
 	template <class T>
 	bool operator !=(const vector_const_iter<T> &lhs, const vector_const_iter<T> &rhs)

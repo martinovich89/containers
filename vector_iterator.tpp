@@ -53,4 +53,28 @@ namespace ft
 	{
 		return (vector_const_iter<T>::_ptr + n);
 	}
+
+	template <class T>
+	ptrdiff_t	operator-(const vector_iter<T> &lhs, const vector_iter<T> &rhs)
+	{
+		return (lhs.vector_iter<T>::_ptr - rhs.vector_iter<T>::_ptr);
+	}
+	
+	template <class T>
+	vector_iter<T> operator-(const vector_iter<T> &iter, const int n)
+	{
+		return (vector_iter<T>(iter.vector_iter<T>::_ptr - n));
+	}
+
+	template <class T>
+	vector_iter<T> operator+(const vector_iter<T> &iter, const int n)
+	{
+		return (vector_iter<T>(iter.vector_iter<T>::_ptr + n));
+	}
+
+	template <class T>
+	vector_iter<T> operator+(const int n, const vector_iter<T> &iter)
+	{
+		return (vector_iter<T>(iter.vector_iter<T>::_ptr + n));
+	}
 }

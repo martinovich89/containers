@@ -1,47 +1,58 @@
 #include "vector.hpp"
-#include <cstdlib>
 
-#ifdef __STL__
-# define ft std
-#endif
 
-typedef struct s_max_size_test
+// test vector and iterator classes
+int main()
 {
-	size_t a;
-	size_t b;
-	int		c[42];
-}	t_max_size_test;
+	ft::vector<int> myvector;
+	ft::vector<int>::iterator it;
 
-int main(void)
-{
+	// set some values:
+	for (int i=1; i<=5; i++) myvector.push_back(i); // myvector: 1 2 3 4 5
 
-	ft::vector<short> my_vector0;
-	ft::vector<int> my_vector1;
-	ft::vector<t_max_size_test> my_vector3;
+	it = myvector.begin();
+	++it;       // "it" points now to number 2           ^
 
-	my_vector0.push_back(42);
-	my_vector0.push_back(21);
-	const ft::vector<short> my_vector2(my_vector0);
+	myvector.insert (it,10);                        // myvector: 1 10 2 3 4 5
 
-	std::cout << my_vector0.max_size() << " | " << (size_t)~0 / (sizeof(short) * 2) << std::endl;
-	std::cout << my_vector1.max_size() << " | " << (size_t)~0 / (sizeof(int) * 2) << std::endl;
-	std::cout << my_vector2.max_size() << " | " << (size_t)~0 / (sizeof(short) * 2) << std::endl;
-	std::cout << my_vector3.max_size() << " | " << (size_t)~0 / (sizeof(t_max_size_test) * 2) << std::endl;
+	// "it" still points to number 2                      ^
+	myvector.insert (it,2,20);                      // myvector: 1 10 20 20 2 3 4 5
 
-	ft::vector<short>::iterator iter;
-	iter = my_vector0.begin();
-	std::cout << *iter << std::endl;
+	--it;       // "it" points now to the second 20            ^
 
+	std::vector<int> myvector2 (2,30);
+	myvector.insert (it,myvector2.begin(),myvector2.end());
+	// myvector: 1 10 20 30 30 20 2 3 4 5
+	// "it" no longer valid, get a new one:
+	it = myvector.begin();
 
-	my_vector1.push_back(42);
-	ft::vector<int>::reverse_iterator riter;
-	riter = my_vector1.rbegin();
-//	std::cout << *riter << std::endl;
+	it += 3;    // "it" points now to number 30                ^
 
-	ft::vector<short>::const_iterator citer;
-	citer = my_vector2.begin();
-	std::cout << *citer << std::endl;
+	myvector.insert (it, myvector.begin(),myvector.begin()+5);
+	// myvector: 1 10 20 1 10 20 30 30 20 2 3 4 5
+	// "it" no longer valid, get a new one:
+	it = myvector.begin();
 
-	
-	return (0);
+	it += 5;    // "it" points now to number 20                ^
+
+	myvector.erase (it);
+	// myvector: 1 10 20 1 10 30 30 20 2 3 4 5
+	// "it" no longer valid, get a new one:
+	it = myvector.begin();
+
+	it += 6;    // "it" points now to number 30                ^
+
+	myvector.erase (it,it+3);
+	// myvector: 1 10 20 1 10 30 2 3 4 5
+	// "it" no longer valid, get a new one:
+	it = myvector.begin();
+
+	it += 5;    // "it" points now to number
+
+	std::cout << "myvector contains:";
+	for (it=myvector.begin(); it<myvector.end(); it++)
+		std::cout << ' ' << *it;
+	std::cout << std::endl;
+
+	return 0;
 }

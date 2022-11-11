@@ -7,6 +7,7 @@ namespace ft
 	template < class T, class Alloc >
 	vector<T, Alloc>::~vector()
 	{
+		clear();
 		_alloc.deallocate(_data, _capacity);
 	}
 
@@ -35,6 +36,19 @@ namespace ft
 			_alloc.construct(_data + i, val);
 			i++;
 		}
+	}
+
+	template <class T, class Alloc>
+	template< class InputIterator >
+	vector<T, Alloc>::vector(InputIterator first, InputIterator last, const Alloc& alloc)
+	{
+		(void)first;
+		(void)last;
+		(void)alloc;
+		
+		// QU'EST CE QUE C'EST QUE CA ??
+		// typedef typename ft::is_integral<InputIt>::type	integral;
+		// m_assign_dispatch(first, last, integral());
 	}
 
 
@@ -217,11 +231,11 @@ namespace ft
 	{
 		(void)position;
 		(void)val;
-		
+		return (position);
 	}
 
 	template < class T, class Alloc >
-	typename vector<T, Alloc>::iterator vector<T, Alloc>::insert(typename vector<T, Alloc>::iterator position, typename vector<T, Alloc>::size_type n, const typename vector<T, Alloc>::value_type& val)
+	typename vector<T, Alloc>::iterator vector<T, Alloc>::ninsert(typename vector<T, Alloc>::iterator position, typename vector<T, Alloc>::size_type n, const typename vector<T, Alloc>::value_type& val)
 	{
 		size_type		size = _size + n;
 		const size_type	new_size = size;
@@ -249,12 +263,12 @@ namespace ft
 
 	template < class T, class Alloc >
 	template < class InputIterator >
-		typename vector<T, Alloc>::iterator vector<T, Alloc>::insert(typename vector<T, Alloc>::iterator position, InputIterator first, InputIterator last)
+		typename vector<T, Alloc>::iterator vector<T, Alloc>::_insert_range(typename vector<T, Alloc>::iterator position, InputIterator first, InputIterator last)
 	{
 		const difference_type	count = last - first;
 		size_type				size = _size + count;
 		const size_type			new_size = size;
-		const difference_type	offset = position - _data;
+		const difference_type	offset = position - begin();
 		iterator				new_pos, it;
 
 		if (_capacity < size)
@@ -277,6 +291,31 @@ namespace ft
 		return new_pos;
 	}
 
+	// _insert_dispatch
+	template < class T, class Alloc >
+	typename vector<T, Alloc>::iterator vector<T, Alloc>::_insert_dispatch(typename vector<T, Alloc>::iterator position, typename vector<T, Alloc>::size_type n, const typename vector<T, Alloc>::value_type& val, true_type)
+	{
+		return insert(position, n, val);
+	}
+
+	template < class T, class Alloc >
+	template < class InputIterator >
+	typename vector<T, Alloc>::iterator vector<T, Alloc>::_insert_dispatch(typename vector<T, Alloc>::iterator position, InputIterator first, InputIterator last, false_type)
+	{
+		return _insert_range(position, first, last);
+	}
+
+	template < class T, class Alloc >
+
+
+	template < class T, class Alloc >
+	template < class InputIterator >
+		typename vector<T, Alloc>::iterator vector<T, Alloc>::insert(typename vector<T, Alloc>::iterator position, InputIterator first, InputIterator last)
+	{
+		typedef is_integral<InputIterator> is_int;
+		return _insert_dispatch(position, first, last, is_int());
+	}
+
 	template < class T, class Alloc >
 	typename vector<T, Alloc>::iterator vector<T, Alloc>::erase(typename vector<T, Alloc>::iterator position)
 	{
@@ -294,12 +333,6 @@ namespace ft
 	void vector<T, Alloc>::swap(vector &x)
 	{
 		(void)x;
-	}
-
-	template < class T, class Alloc >
-	void vector<T, Alloc>::clear()
-	{
-
 	}
 
 	template < class T, class Alloc >
@@ -363,4 +396,10 @@ namespace ft
 		return (reverse_iterator(begin()));
 	}
 
+	template <class T, class Alloc>
+	void vector<T, Alloc>::clear()
+	{
+		while (_size)
+			_alloc.destroy(_data + --_size);
+	}
 }

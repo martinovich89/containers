@@ -24,7 +24,7 @@ namespace ft
 			// typedef iter&												reference;
 			typedef typename std::iterator_traits<iter>::reference		reference;
 		
-		reverse_iterator()
+		reverse_iterator() : _iter()
 		{
 
 		}
@@ -58,6 +58,20 @@ namespace ft
 			return (tmp);
 		}
 
+		reverse_iterator &operator--() {
+			_iter++;
+			return *this;
+		}
+
+		reverse_iterator operator--(int)
+		{
+			reverse_iterator tmp;
+
+			tmp = _iter;
+			_iter++;
+			return (tmp);
+		}
+
 		reverse_iterator &operator=(const reverse_iterator &other)
 		{
 			_iter = &other.operator*();
@@ -66,8 +80,9 @@ namespace ft
 
 		reference operator*() const
 		{
+			std::cout << "lol" << std::endl;
 			iter tmp = this->_iter;
-			return (reference)(*--tmp);
+			return (reference)(*(--tmp));
 		}
 
 		private:

@@ -26,6 +26,14 @@ namespace ft
 			T			*operator->();
 			T			&operator[](const size_t n);
 	};
+	template <class T>
+	ptrdiff_t	operator-(const vector_iter<T> &lhs, const vector_iter<T> &rhs);
+	template <class T>
+	vector_iter<T> operator-(const vector_iter<T> &iter, const int n);
+	template <class T>
+	vector_iter<T> operator+(const vector_iter<T> &iter, const int n);
+	template <class T>
+	vector_iter<T> operator+(const int n, const vector_iter<T> &iter);
 }
 
 #include "vector_iterator.tpp"

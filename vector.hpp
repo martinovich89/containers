@@ -3,12 +3,13 @@
 #include <limits>
 #include <cstddef>
 #include <memory>
-#include <iostream>
 #include <vector>
+#include <iostream>
 #include <stdexcept>
 #include <sstream>
 #include "vector_iterator.hpp"
 #include "reverse_iterator.hpp"
+#include "is_integral.hpp"
 
 namespace ft
 {
@@ -88,7 +89,12 @@ namespace ft
 		size_type	_capacity;
 		size_type	_size;
 		value_type *_data;
-	
+
+		template <class InputIterator>
+			iterator _insert_dispatch(iterator position, InputIterator first, InputIterator last, ft::false_type);
+		iterator _insert_dispatch(iterator position, size_type n, const value_type& val, ft::true_type);
+		template <class InputIterator>
+			iterator _insert_range(iterator position, InputIterator first, InputIterator last);
 		// UTILITY
 		void	_check_range(size_type n) const;
 	};
