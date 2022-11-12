@@ -235,7 +235,7 @@ namespace ft
 	}
 
 	template < class T, class Alloc >
-	typename vector<T, Alloc>::iterator vector<T, Alloc>::ninsert(typename vector<T, Alloc>::iterator position, typename vector<T, Alloc>::size_type n, const typename vector<T, Alloc>::value_type& val)
+	typename vector<T, Alloc>::iterator vector<T, Alloc>::insert(typename vector<T, Alloc>::iterator position, typename vector<T, Alloc>::size_type n, const typename vector<T, Alloc>::value_type& val)
 	{
 		size_type		size = _size + n;
 		const size_type	new_size = size;
@@ -306,9 +306,6 @@ namespace ft
 	}
 
 	template < class T, class Alloc >
-
-
-	template < class T, class Alloc >
 	template < class InputIterator >
 		typename vector<T, Alloc>::iterator vector<T, Alloc>::insert(typename vector<T, Alloc>::iterator position, InputIterator first, InputIterator last)
 	{
@@ -320,6 +317,7 @@ namespace ft
 	typename vector<T, Alloc>::iterator vector<T, Alloc>::erase(typename vector<T, Alloc>::iterator position)
 	{
 		(void)position;
+		return (position);
 	}
 
 	template < class T, class Alloc >
@@ -327,6 +325,7 @@ namespace ft
 	{
 		(void)first;
 		(void)last;
+		return (first);
 	}
 
 	template < class T, class Alloc >

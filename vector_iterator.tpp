@@ -37,7 +37,7 @@ namespace ft
 	}
 
 	template <class T>
-	T		&vector_iter<T>::operator*() const
+	T		&vector_iter<T>::operator*()
 	{
 		return (*vector_const_iter<T>::_ptr);
 	}
@@ -55,26 +55,70 @@ namespace ft
 	}
 
 	template <class T>
+	vector_iter<T> &vector_iter<T>::operator++(void)
+	{
+		vector_iter<T>::_ptr++;
+		return *this;
+	}
+
+	template <class T>
+	vector_iter<T> vector_iter<T>::operator++(int)
+	{
+		vector_iter<T> tmp(*this);
+		operator++();
+		return tmp;
+	}
+
+	template <class T>
+	vector_iter<T> &vector_iter<T>::operator--(void)
+	{
+		vector_iter<T>::_ptr--;
+		return *this;
+	}
+
+	template <class T>
+	vector_iter<T> vector_iter<T>::operator--(int)
+	{
+		vector_iter<T> tmp(*this);
+		operator--();
+		return tmp;
+	}
+
+	template <class T>
+	vector_iter<T> &vector_iter<T>::operator+=(const int n)
+	{
+		vector_iter<T>::_ptr += n;
+		return *this;
+	}
+
+	template <class T>
+	vector_iter<T> &vector_iter<T>::operator-=(const int n)
+	{
+		vector_iter<T>::_ptr -= n;
+		return *this;
+	}
+
+	template <class T>
 	ptrdiff_t	operator-(const vector_iter<T> &lhs, const vector_iter<T> &rhs)
 	{
-		return (lhs.vector_iter<T>::_ptr - rhs.vector_iter<T>::_ptr);
+		return (lhs.vector_const_iter<T>::operator->() - rhs.vector_const_iter<T>::operator->());
 	}
 	
 	template <class T>
 	vector_iter<T> operator-(const vector_iter<T> &iter, const int n)
 	{
-		return (vector_iter<T>(iter.vector_iter<T>::_ptr - n));
+		return (vector_iter<T>(const_cast<T*>(iter.vector_const_iter<T>::operator->() - n)));
 	}
 
 	template <class T>
 	vector_iter<T> operator+(const vector_iter<T> &iter, const int n)
 	{
-		return (vector_iter<T>(iter.vector_iter<T>::_ptr + n));
+		return (vector_iter<T>(const_cast<T*>(iter.vector_const_iter<T>::operator->() + n)));
 	}
 
 	template <class T>
 	vector_iter<T> operator+(const int n, const vector_iter<T> &iter)
 	{
-		return (vector_iter<T>(iter.vector_iter<T>::_ptr + n));
+		return (vector_iter<T>(const_cast<T*>(iter.vector_const_iter<T>::operator->() + n)));
 	}
 }

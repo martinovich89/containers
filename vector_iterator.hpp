@@ -22,9 +22,16 @@ namespace ft
 			vector_iter(T *ptr);
 
 			vector_iter & operator=(const vector_iter & other);
-			T			&operator*() const;
+			T			&operator*();
 			T			*operator->();
 			T			&operator[](const size_t n);
+
+			vector_iter &operator++(void);
+			vector_iter operator++(int);
+			vector_iter &operator--(void);
+			vector_iter operator--(int);
+			vector_iter &operator+=(const int n);
+			vector_iter &operator-=(const int n);
 	};
 	template <class T>
 	ptrdiff_t	operator-(const vector_iter<T> &lhs, const vector_iter<T> &rhs);
