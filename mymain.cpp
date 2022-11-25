@@ -1,5 +1,6 @@
 #include "vector.hpp"
-
+//#include "map.hpp"
+#include "pair.hpp"
 
 // test vector and iterator classes
 int main()
@@ -52,7 +53,7 @@ int main()
 	std::cout << "myvector contains:";
 	for (it=myvector.begin(); it<myvector.end(); it++)
 		std::cout << ' ' << *it;
-	std::cout << std::endl;
+	std::cout << std::endl;	
 
 	return 0;
 }

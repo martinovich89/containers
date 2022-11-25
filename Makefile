@@ -13,13 +13,13 @@ HEADERS			=	vector.hpp\
 					vector_iterator.hpp\
 					iterator_traits.hpp
 
-SRCS			=	mymain.cpp\
+SRCS			=	mymain.cpp
 
 OBJS			=	$(OBJS_FT_DIR)/$(SRCS:.cpp=.o)
 
 OBJS_STL		=	$(OBJS_STL_DIR)/$(SRCS:.cpp=.o)
 
-CXX				=	clang++
+CXX				=	g++
 
 
 CXXFLAGS		=	-Wall -Wextra -Werror -std=c++98 #-D __STL__ #-fsanitize=address -g3
