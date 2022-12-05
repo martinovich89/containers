@@ -15,6 +15,12 @@ namespace ft
 	class vector_const_iter : public std::iterator< std::random_access_iterator_tag, T, ptrdiff_t, T*, T& >
 	{
 		public:
+			typedef std::ptrdiff_t							difference_type;
+			typedef T										value_type;
+			typedef T*										pointer;
+			typedef T&										reference;
+			typedef std::random_access_iterator_tag			iterator_category;
+
 			vector_const_iter();
 			~vector_const_iter();
 			vector_const_iter(const vector_const_iter &other);

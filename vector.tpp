@@ -291,7 +291,8 @@ namespace ft
 		return new_pos;
 	}
 
-	// _insert_dispatch
+	// these 2 functions are used to choose the correct insert function
+	// 2 different prototypes were needed to avoid ambiguity
 	template < class T, class Alloc >
 	typename vector<T, Alloc>::iterator vector<T, Alloc>::_insert_dispatch(typename vector<T, Alloc>::iterator position, typename vector<T, Alloc>::size_type n, const typename vector<T, Alloc>::value_type& val, true_type)
 	{

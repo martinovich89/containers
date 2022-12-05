@@ -1,4 +1,5 @@
 #include <memory>
+#include "iterator_traits.hpp"
 
 template < class T, class Vcomp, class Alloc = std::allocator<T> >
 class TreeNode
@@ -7,16 +8,19 @@ class TreeNode
 		TreeNode();
 		~TreeNode();
 		TreeNode(const TreeNode &other);
-		Treenode &operator=(const TreeNode &other);
-
-
+		TreeNode &operator=(const TreeNode &other);
 
 		get_key();
 		get_val();
 
 	private :
-		T _data;
+		T			_data;
+		TreeNode	*_left;
+		TreeNode	*_right;
+		TreeNode	*_parent;
+		bool		_color;
 };
+
 
 template <class T>
 class RbtreeIter
@@ -29,6 +33,7 @@ class RbtreeIter
 		typedef std::bidirectional_iterator_tag iterator_category;
 		
 		RbtreeIter();
+		RbtreeIter(TreeNode *node);
 		RbtreeIter(const RbtreeIter &other);
 		~RbtreeIter();
 		RbtreeIter &operator=(const RbtreeIter &other);
@@ -42,20 +47,39 @@ class RbtreeIter
 		bool operator==(const RbtreeIter &other) const;
 		bool operator!=(const RbtreeIter &other) const;
 
-		private :
-			TreeNode *node;
+	private :
+		TreeNode *_node;
+
 };
 
-template < class T, class Vcomp, class Alloc = std::allocator<T> >
+template < class T, class Vcomp = std::less<T>, class Alloc = std::allocator<T> >
 class Rbtree
 {
 	public :
 		typedef TreeNode node;
-		Rbtree();
+		typedef RbtreeIter<T> iterator;
 
-		add_node(const T &data);
+		Rbtree();
+		~Rbtree();
+		Rbtree(const Rbtree &other);
+		Rbtree &operator=(const Rbtree &other);
+
+		iterator begin();
+		iterator end();
+
+		node *copy(node *other);
+		void clear();
+		void clear(node *node);
+
+		iterator find_node(const T &);
+		void add_node(const T &data);
+		void delete_node(const T &data);
+
 	private :
-		Vcomp _comp;
+		Vcomp	_comp;
+		node	*_root;
+
+		void rotation();
 };
 
-#include "red-black_tree.tpp"
+#include "rbtree.tpp"

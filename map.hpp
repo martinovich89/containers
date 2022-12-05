@@ -38,6 +38,7 @@ namespace ft
 		typedef ptrdiff_t									difference_type;
 		typedef size_t										size_type;
 
+		class value_compare;
 		// CONSTRUCTORS
 //		map();
 		explicit map(const key_compare &comp,
