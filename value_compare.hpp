@@ -15,7 +15,7 @@ namespace ft
 			typedef bool result_type;
 			typedef value_type first_argument_type;
 			typedef value_type second_argument_type;
-			bool operator() (const value_type& x, const value_type& y) const
+			bool operator() (const first_argument_type& x, const second_argument_type& y) const
 			{
 				return comp(x.first, y.first);
 			}
