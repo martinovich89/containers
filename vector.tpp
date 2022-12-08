@@ -229,9 +229,22 @@ namespace ft
 	typename vector<T, Alloc>::iterator vector<T, Alloc>::insert(
 		typename vector<T, Alloc>::iterator position, const vector<T, Alloc>::value_type& val)
 	{
-		(void)position;
-		(void)val;
-		return (position);
+		// insert before position
+		size_type		size = _size + 1;
+		const size_type	new_size = size;
+		const size_type	offset = position - begin();
+		iterator		new_pos;
+
+		if (_capacity < size)
+		{
+			if (size > 2 * _size)
+				reserve(size);
+			else
+				reserve(2 * _size);
+		}
+
+		while (size > _size)
+			_alloc.construct(_data + --size, T());
 	}
 
 	template < class T, class Alloc >
@@ -317,8 +330,12 @@ namespace ft
 	template < class T, class Alloc >
 	typename vector<T, Alloc>::iterator vector<T, Alloc>::erase(typename vector<T, Alloc>::iterator position)
 	{
-		(void)position;
-		return (position);
+		//erase element at position
+
+		_alloc.destroy(position);
+		std::copy(position + 1, end(), position);
+		_size--;
+		return position;
 	}
 
 	template < class T, class Alloc >
@@ -351,6 +368,7 @@ namespace ft
 	template < class T, class Alloc >
 	typename vector<T, Alloc>::iterator	vector<T, Alloc>::begin(void)
 	{
+		// std::cout << "begin" << std::endl;
 		return iterator(_data);
 	}
 

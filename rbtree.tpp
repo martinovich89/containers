@@ -60,6 +60,45 @@ namespace ft
 		delete node;
 	}
 
+	// rotate_left function
+
+	template <class T, class Compare, class Alloc>
+	void Rbtree<T, Compare, Alloc>::rotate_left(node *current)
+	{
+		node *right = current->_right;
+		current->_right = right->_left;
+		if (right->_left != NULL)
+			right->_left->_parent = current;
+		right->_parent = current->_parent;
+		if (current->_parent == NULL)
+			_root = right;
+		else if (current == current->_parent->_left)
+			current->_parent->_left = right;
+		else
+			current->_parent->_right = right;
+		right->_left = current;
+		current->_parent = right;
+	}
+
+	// rotate_right function
+	template <class T, class Compare, class Alloc>
+	void Rbtree<T, Compare, Alloc>::rotate_right(node *current)
+	{
+		node *left = current->_left;
+		current->_left = left->_right;
+		if (left->_right != NULL)
+			left->_right->_parent = current;
+		left->_parent = current->_parent;
+		if (current->_parent == NULL)
+			_root = left;
+		else if (current == current->_parent->_right)
+			current->_parent->_right = left;
+		else
+			current->_parent->_left = left;
+		left->_right = current;
+		current->_parent = left;
+	}
+
 	// rebalance function
 	template <class T, class Compare, class Alloc>
 	void Rbtree<T, Compare, Alloc>::rebalance(node *current)
@@ -102,10 +141,7 @@ namespace ft
 			current->_parent->_color = false;
 			current->_parent->_left->_color = true;
 		}
-	}			TreeNode	*_root;
-			TreeNode	*uncle;
-			TreeNode	*grandparent;
-			TreeNode	*brother;
+	}
 
 	// add_node function
 	template <class T, class Compare, class Alloc>
