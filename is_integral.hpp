@@ -1,5 +1,3 @@
-#pragma once
-
 namespace ft
 {
 	struct true_type {};
