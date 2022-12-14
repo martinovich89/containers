@@ -1,4 +1,3 @@
-#pragma once
 
 namespace ft
 {
@@ -231,8 +230,6 @@ namespace ft
 	{
 		// insert before position
 		size_type		size = _size + 1;
-		const size_type	new_size = size;
-		const size_type	offset = position - begin();
 		iterator		new_pos;
 
 		if (_capacity < size)
@@ -245,6 +242,13 @@ namespace ft
 
 		while (size > _size)
 			_alloc.construct(_data + --size, T());
+
+		new_pos = begin() + (position - begin());
+		std::copy_backward(new_pos, end(), end() + 1);
+		_alloc.construct(new_pos.operator->(), val);
+		_size++;
+
+		return (new_pos);
 	}
 
 	template < class T, class Alloc >
@@ -332,7 +336,7 @@ namespace ft
 	{
 		//erase element at position
 
-		_alloc.destroy(position);
+		_alloc.destroy(position.operator->());
 		std::copy(position + 1, end(), position);
 		_size--;
 		return position;
@@ -341,9 +345,15 @@ namespace ft
 	template < class T, class Alloc >
 	typename vector<T, Alloc>::iterator vector<T, Alloc>::erase(typename vector<T, Alloc>::iterator first, typename vector<T, Alloc>::iterator last)
 	{
-		(void)first;
-		(void)last;
-		return (first);
+		// erase elements in range [first, last)
+
+		iterator	it = first;
+		
+		while (it != last)
+			_alloc.destroy(it++.operator->());
+		std::copy(last, end(), first);
+		_size -= last - first;
+		return first;
 	}
 
 	template < class T, class Alloc >

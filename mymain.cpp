@@ -2,8 +2,10 @@
 # include <vector>
 # include <map>
 namespace ft = std;
+# define VECTOR_NAME "stlvector"
 #else
 # include "vector.hpp"
+# define VECTOR_NAME "ftvector"
 #endif
 #include <iostream>
 #include <string>
@@ -33,7 +35,7 @@ int main()
 
 	myvector.insert (it,10);                        // myvector: 1 10 2 3 4 5
 
-	std::cout << "myvector contains:";
+	std::cout << VECTOR_NAME << " contains:";
 	for (it=myvector.begin(); it<myvector.end(); it++)
 		std::cout << ' ' << *it;
 	std::cout << std::endl;
@@ -41,14 +43,14 @@ int main()
 	// "it" still points to number 2                      ^
 	myvector.insert (it,2,20);                      // myvector: 1 10 20 20 2 3 4 5
 
-	std::cout << "myvector contains:";
+	std::cout << VECTOR_NAME << " contains:";
 	for (it=myvector.begin(); it<myvector.end(); it++)
 		std::cout << ' ' << *it;
 	std::cout << std::endl;
 
 	--it;       // "it" points now to the second 20            ^
 
-	std::cout << "myvector contains:";
+	std::cout << VECTOR_NAME << " contains:";
 	for (it=myvector.begin(); it<myvector.end(); it++)
 		std::cout << ' ' << *it;
 	std::cout << std::endl;
@@ -61,7 +63,7 @@ int main()
 
 	it += 3;    // "it" points now to number 30                ^
 
-	std::cout << "myvector contains:";
+	std::cout << VECTOR_NAME << " contains:";
 	for (it=myvector.begin(); it<myvector.end(); it++)
 		std::cout << ' ' << *it;
 	std::cout << std::endl;
@@ -87,7 +89,7 @@ int main()
 
 	it += 5;    // "it" points now to number
 
-	std::cout << "myvector contains:";
+	std::cout << VECTOR_NAME << " contains:";
 	for (it=myvector.begin(); it<myvector.end(); it++)
 		std::cout << ' ' << *it;
 	std::cout << std::endl;	
@@ -96,7 +98,7 @@ int main()
 	it = myvector.begin();
 	ft::vector<int>::reverse_iterator rit(it);
 
-	std::cout << "myvector contains:";
+	std::cout << VECTOR_NAME << " contains:";
 //	for (rit=myvector.rbegin(); rit < myvector.rend(); rit++)
 		std::cout << ' ' << *rit;
 	std::cout << std::endl;
