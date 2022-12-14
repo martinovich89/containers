@@ -132,5 +132,47 @@ int main()
 		std::cout << "vector 'empty' is indeed empty." << std::endl;
 	}
 
+	// test vector constructors
+	ft::vector<int> first;                                // empty vector of ints
+	ft::vector<int> second (4, 100);                       // four ints with value 100
+	ft::vector<int> third (second.begin(), second.end());  // iterating through second
+	ft::vector<int> fourth (third);                       // a copy of third
+
+	// the iterator constructor can also be used to construct from arrays:
+	int myints[] = {16,2,77,29};
+	ft::vector<int> fifth (myints, myints + sizeof(myints) / sizeof(int) );
+
+	std::cout << "The contents of fifth are:";
+	for (ft::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)
+		std::cout << ' ' << *it;
+	std::cout << '\n';
+
+	// test vector assign
+	ft::vector<int> myvector3;
+	ft::vector<int>::iterator it3;
+
+	// set some initial values:
+	for (int i=1; i<=5; i++)
+		myvector3.push_back(i); // myvector: 1 2 3 4 5
+
+	it3 = myvector3.begin();
+	++it3;       // "it" points now to number 2
+
+	myvector3.assign (7, 100);             // myvector: 100 100 100 100 100 100 100
+
+	std::cout << VECTOR_NAME << " contains:";
+	for (it3=myvector3.begin(); it3<myvector3.end(); it3++)
+		std::cout << ' ' << *it3;
+	std::cout << std::endl;
+
+	// assign from array
+	int myints2[] = {1776, 7 ,4};
+	myvector3.assign (myints2, myints2 + 3);   // myvector: 1776 7 4
+
+	std::cout << VECTOR_NAME << " contains:";
+	for (it3=myvector3.begin(); it3<myvector3.end(); it3++)
+		std::cout << ' ' << *it3;
+	std::cout << std::endl;
+
 	return (0);
 }

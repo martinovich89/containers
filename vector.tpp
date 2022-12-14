@@ -23,7 +23,7 @@ namespace ft
 	template < class T, class Alloc >
 	vector<T, Alloc>::vector(typename vector<T, Alloc>::size_type n,
 						const typename vector<T, Alloc>::value_type &val,
-						const typename vector<T, Alloc>::allocator_type &alloc)
+						const Alloc &alloc)
 	:	_alloc(alloc),
 		_capacity(n),
 		_size(n),
@@ -37,17 +37,26 @@ namespace ft
 		}
 	}
 
+	template < class T, class Alloc >
+	template <class InputIterator>
+	vector<T, Alloc>::_constructor_dispatch(InputIterator first, InputIterator last, const Alloc& alloc, const false_type&)
+	{
+		vector(first, last, alloc);
+	}
+	
+	template < class T, class Alloc >
+	template <class InputIterator>
+	vector<T, Alloc>::_constructor_dispatch(InputIterator first, InputIterator last, const Alloc& alloc, const true_type&)
+	{
+		vector(first, last, alloc);
+	}
+
 	template <class T, class Alloc>
 	template< class InputIterator >
 	vector<T, Alloc>::vector(InputIterator first, InputIterator last, const Alloc& alloc)
 	{
-		(void)first;
-		(void)last;
-		(void)alloc;
-		
-		// QU'EST CE QUE C'EST QUE CA ??
-		// typedef typename ft::is_integral<InputIt>::type	integral;
-		// m_assign_dispatch(first, last, integral());
+		typedef is_integral<InputIterator> is_int;
+		return _constructor_dispatch(first, last, alloc, is_int());
 	}
 
 

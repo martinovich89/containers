@@ -95,6 +95,10 @@ namespace ft
 		iterator _insert_dispatch(iterator position, size_type n, const value_type& val, ft::true_type);
 		template <class InputIterator>
 			iterator _insert_range(iterator position, InputIterator first, InputIterator last);
+		template <class InputIterator>
+			void _constructor_dispatch(InputIterator first, InputIterator last, ft::false_type);
+		template <class InputIterator>
+			void _constructor_dispatch(size_type n, const value_type& val, ft::true_type);
 		// UTILITY
 		void	_check_range(size_type n) const;
 	};
