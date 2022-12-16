@@ -101,6 +101,15 @@ namespace ft
 			void _constructor_dispatch(size_type n, const value_type& val, ft::true_type);
 		// UTILITY
 		void	_check_range(size_type n) const;
+		template <class InputIterator>
+			void _constructor_range(InputIterator first, InputIterator last);
+		void _constructor_size(size_type n, const value_type &val);
+		template <class InputIterator>
+			void _constructor_dispatch(InputIterator first, InputIterator last, const Alloc& alloc, const false_type&);
+		template <class InputIterator>
+			void _constructor_dispatch(InputIterator first, InputIterator last, const Alloc& alloc, const true_type&);
+		template <class Integral>
+			void _constructor_dispatch(Integral n, const value_type& val, const Alloc& alloc, const true_type&);
 	};
 }
 

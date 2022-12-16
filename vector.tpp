@@ -21,14 +21,22 @@ namespace ft
 	}
 
 	template < class T, class Alloc >
-	vector<T, Alloc>::vector(typename vector<T, Alloc>::size_type n,
-						const typename vector<T, Alloc>::value_type &val,
-						const Alloc &alloc)
+	vector<T, Alloc>::vector(typename vector<T, Alloc>::size_type n, const typename vector<T, Alloc>::value_type &val, const typename vector<T, Alloc>::allocator_type &alloc)
 	:	_alloc(alloc),
-		_capacity(n),
-		_size(n),
-		_data(_alloc.allocate(_capacity))
+		_capacity(0),
+		_size(0),
+		_data(_alloc.allocate(0))
 	{
+		for (size_t i = 0; i < n; i++)
+			_alloc.construct(_data + i, val);
+	}
+
+	template < class T, class Alloc >
+	void vector<T, Alloc>::_constructor_size(typename vector<T, Alloc>::size_type n, const typename vector<T, Alloc>::value_type &val)
+	{
+		_capacity = size;
+		_size = size;
+	    _data = _alloc.allocate(_capacity);
 		size_t	i = 0;
 		while (i < n)
 		{
@@ -39,24 +47,40 @@ namespace ft
 
 	template < class T, class Alloc >
 	template <class InputIterator>
-	vector<T, Alloc>::_constructor_dispatch(InputIterator first, InputIterator last, const Alloc& alloc, const false_type&)
+	void vector<T, Alloc>::_constructor_range(InputIterator first, InputIterator last)
 	{
-		vector(first, last, alloc);
+		_capacity = std::distance(first, last);
+		_size = _capacity;
+		_data = _alloc.allocate(_capacity);
+		iterator it = first;
+		while (it != last)
+		{
+			push_back(*it);
+			it++;
+		}
+	}
+
+
+	template < class T, class Alloc >
+	template <class InputIterator>
+	void vector<T, Alloc>::_constructor_dispatch(InputIterator first, InputIterator last, const Alloc& alloc, const false_type&)
+	{
+		_constructor_range(first, last);
 	}
 	
 	template < class T, class Alloc >
-	template <class InputIterator>
-	vector<T, Alloc>::_constructor_dispatch(InputIterator first, InputIterator last, const Alloc& alloc, const true_type&)
+	template <class Integral>
+	void vector<T, Alloc>::_constructor_dispatch(Integral n, const value_type& val, const Alloc& alloc, const true_type&)
 	{
-		vector(first, last, alloc);
+		_constructor_size(size, val);
 	}
 
 	template <class T, class Alloc>
 	template< class InputIterator >
-	vector<T, Alloc>::vector(InputIterator first, InputIterator last, const Alloc& alloc)
+	vector<T, Alloc>::vector(InputIterator first, InputIterator last, const Alloc& alloc) : _alloc(alloc)
 	{
 		typedef is_integral<InputIterator> is_int;
-		return _constructor_dispatch(first, last, alloc, is_int());
+		_constructor_dispatch(first, last, is_int());
 	}
 
 
