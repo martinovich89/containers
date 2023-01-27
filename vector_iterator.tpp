@@ -1,5 +1,3 @@
-#pragma once
-
 namespace ft
 {
 	template<class T>
@@ -26,12 +24,13 @@ namespace ft
 	vector_iter<T>::vector_iter(T *ptr)
 	: vector_const_iter<T>(ptr)
 	{
-
+//		std::cout << "ptr constructor" << std::endl;
 	}
 
 	template <class T>
 	vector_iter<T> &vector_iter<T>::operator=(const vector_iter<T> & other)
 	{
+	//	std::cout << "vector_iter<T> &vector_iter<T>::operator=(const vector_iter<T> & other)" << std::endl;
 		vector_const_iter<T>::_ptr = other.vector_const_iter<T>::_ptr;
 		return *this;
 	}
@@ -39,7 +38,7 @@ namespace ft
 	template <class T>
 	T		&vector_iter<T>::operator*()
 	{
-		return (*vector_const_iter<T>::_ptr);
+		return (*vector_iter<T>::_ptr);
 	}
 
 	template <class T>
@@ -51,7 +50,7 @@ namespace ft
 	template <class T>
 	T		&vector_iter<T>::operator[](const size_t n)
 	{
-		return (vector_const_iter<T>::_ptr + n);
+		return (*(vector_const_iter<T>::_ptr + n));
 	}
 
 	template <class T>

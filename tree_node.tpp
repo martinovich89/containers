@@ -6,6 +6,12 @@ namespace ft
     }
 
     template <class T, class Compare, class Alloc>
+    TreeNode<T, Compare, Alloc>::TreeNode(const T &data) : _data(data), _left(NULL), _right(NULL), _parent(NULL), _color(false)
+    {
+        
+    }
+
+    template <class T, class Compare, class Alloc>
     TreeNode<T, Compare, Alloc>::TreeNode(const TreeNode &other) : _left(NULL), _right(NULL), _parent(NULL), _color(false)
     {
         *this = other;

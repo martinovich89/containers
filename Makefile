@@ -13,18 +13,18 @@ HEADERS			=	vector.hpp\
 					vector_iterator.hpp\
 					iterator_traits.hpp
 
-SRCS			=	mymain.cpp
+SRCS			=	map_main.cpp #mymain.cpp #tree_main.cpp #pair_main.cpp
 
 OBJS			=	$(OBJS_FT_DIR)/$(SRCS:.cpp=.o)
 
 OBJS_STL		=	$(OBJS_STL_DIR)/$(SRCS:.cpp=.o)
 
-CXX				=	g++
+CXX				=	clang++
 
 
-CXXFLAGS		=	-Wall -Wextra -Werror -std=c++98 #-D __STL__ #-fsanitize=address -g3
+CXXFLAGS		=	-g -Wall -Wextra -Werror -std=c++98 #-fsanitize=address -g3
 
-STL_FLAGS	=	-Wall -Wextra -Werror -std=c++98 -D __STL__ #-fsanitize=address -g3
+STL_FLAGS	=	-g -Wall -Wextra -Werror -std=c++98 -D __STL__ #-fsanitize=address -g3
 
 all : $(NAME_FT) $(NAME_STL)
 

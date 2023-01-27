@@ -7,6 +7,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <sstream>
+#include <iterator>
 #include "vector_iterator.hpp"
 #include "reverse_iterator.hpp"
 #include "is_integral.hpp"
@@ -49,7 +50,18 @@ namespace ft
 		bool empty() const;
 		void reserve (size_type n);
 
+		// RELATIONAL OPERATORS
+
+		bool operator==(const vector &rhs) const;
+		bool operator!=(const vector &rhs) const;
+		bool operator<(const vector &rhs) const;
+		bool operator<=(const vector &rhs) const;
+		bool operator>(const vector &rhs) const;
+		bool operator>=(const vector &rhs) const;
+		
+
 		// ELEMENT ACCESS
+		vector &operator=(const vector &x);
 		reference operator[] (size_type n);
 		const_reference operator[] (size_type n) const;
 		reference at (size_type n);
@@ -96,20 +108,21 @@ namespace ft
 		template <class InputIterator>
 			iterator _insert_range(iterator position, InputIterator first, InputIterator last);
 		template <class InputIterator>
-			void _constructor_dispatch(InputIterator first, InputIterator last, ft::false_type);
-		template <class InputIterator>
-			void _constructor_dispatch(size_type n, const value_type& val, ft::true_type);
+			void _constructor_dispatch(InputIterator first, InputIterator last, const false_type&);
+		template <class Integral>
+			void _constructor_dispatch(Integral n, const value_type& val, const true_type&);
 		// UTILITY
 		void	_check_range(size_type n) const;
 		template <class InputIterator>
 			void _constructor_range(InputIterator first, InputIterator last);
 		void _constructor_size(size_type n, const value_type &val);
+
 		template <class InputIterator>
-			void _constructor_dispatch(InputIterator first, InputIterator last, const Alloc& alloc, const false_type&);
+			void _assign_dispatch(InputIterator first, InputIterator last, false_type);
+		void _assign_dispatch(size_type n, const value_type& val, true_type);
 		template <class InputIterator>
-			void _constructor_dispatch(InputIterator first, InputIterator last, const Alloc& alloc, const true_type&);
-		template <class Integral>
-			void _constructor_dispatch(Integral n, const value_type& val, const Alloc& alloc, const true_type&);
+			void _assign_range(InputIterator first, InputIterator last);
+		void _assign_size(size_type n, const value_type& val);
 	};
 }
 

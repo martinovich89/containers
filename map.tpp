@@ -2,9 +2,16 @@ namespace ft
 {
 	// CONSTRUCTORS
 	template <class Key, class T, class Compare, class Alloc>
+	map<Key, T, Compare, Alloc>::map()
+		: _tree()
+	{
+		
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc>::map(const key_compare &comp,
 									 const allocator_type &alloc)
-		: _root(NULL), _size(0), _comp(comp), _alloc(alloc)
+		: _tree(comp, alloc)
 	{
 		
 	}
@@ -14,29 +21,29 @@ namespace ft
 	map<Key, T, Compare, Alloc>::map(InputIterator first, InputIterator last,
 									 const key_compare &comp,
 									 const allocator_type &alloc)
-		: _root(NULL), _size(0), _comp(comp), _alloc(alloc)
+		: _tree(first, last, comp, alloc)
 	{
 		
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc>::map(const map &x)
-		: _root(NULL), _size(0), _comp(x._comp), _alloc(x._alloc)
+		: _tree(x._tree)
 	{
-		*this = x;
+
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc>::~map()
 	{
-		clear();
+		// clear();
 	}
 
 	// OPERATORS
 	template <class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc> &map<Key, T, Compare, Alloc>::operator=(const map &x)
 	{
-		void(x);
+		_tree.copy(x._tree);
 	}
 
 	// ITERATORS
@@ -92,19 +99,19 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	bool map<Key, T, Compare, Alloc>::empty() const
 	{
-		return _size == 0;
+		return _tree.size() == 0;
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::size_type map<Key, T, Compare, Alloc>::size() const
 	{
-		return _size;
+		return _tree.size();
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::size_type map<Key, T, Compare, Alloc>::max_size() const
 	{
-		return std::numeric_limits<size_type>::max() / sizeof(node);
+		return std::numeric_limits<size_type>::max() / sizeof(_tree.find_node(0));
 	}
 
 	// ELEMENT ACCESS
@@ -112,22 +119,22 @@ namespace ft
 	typename map<Key, T, Compare, Alloc>::mapped_type &map<Key, T, Compare, Alloc>::operator[](const key_type &k)
 	{
 		// access element
-		void(k);
+		(void)k;
 	}
 
 	// MODIFIERS
 	template <class Key, class T, class Compare, class Alloc>
-	std::pair<typename map<Key, T, Compare, Alloc>::iterator, bool> map<Key, T, Compare, Alloc>::insert(const value_type &val)
+	typename ft::pair< typename map<Key, T, Compare, Alloc>::iterator, bool> map<Key, T, Compare, Alloc>::insert(const typename map<Key, T, Compare, Alloc>::value_type &val)
 	{
-		// use the red-black tree insert algorithm
-		void(val);
+		// use the Rbtree add_node function
+		return (_tree.add_node(val));
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator map<Key, T, Compare, Alloc>::insert(iterator position, const value_type &val)
 	{
-		(void)position;
-		return insert(val).first;
+		//Inserts value in the position as close as possible to the position just prior to pos
+		return (_tree.add_node(val, position.getNode()));		
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -142,26 +149,26 @@ namespace ft
 	void map<Key, T, Compare, Alloc>::erase(iterator position)
 	{
 		// use the redblack tree delete function
-		void(position);
+		(void)(position);
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	size_t map<Key, T, Compare, Alloc>::erase(const key_type &k)
 	{
-		void(k);
+		(void)k;
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	void map<Key, T, Compare, Alloc>::erase(iterator first, iterator last)
 	{
-		void(first);
-		void(last);
+		(void)(first);
+		(void)(last);
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	void map<Key, T, Compare, Alloc>::swap(map &x)
 	{
-		void(x);
+		(void)x;
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -173,13 +180,13 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::key_compare map<Key, T, Compare, Alloc>::key_comp() const
 	{
-		return _comp;
+		return _tree.comp();
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::value_compare map<Key, T, Compare, Alloc>::value_comp() const
 	{
-		return value_compare(_comp);
+		return value_compare(_tree.comp());
 	}
 
 }

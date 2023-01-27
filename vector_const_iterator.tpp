@@ -139,6 +139,13 @@ namespace ft
 	}
 
 	template <class T>
+	vector_const_iter<T> &vector_const_iter<T>::operator-=(const int n)
+	{
+		_ptr -= n;
+		return (*this);
+	}
+
+	template <class T>
 	const T		&vector_const_iter<T>::operator[](const size_t n) const
 	{
 		return (*(_ptr + n));
@@ -147,24 +154,24 @@ namespace ft
 	template <class T>
 	ptrdiff_t	operator-(const vector_const_iter<T> &lhs, const vector_const_iter<T> &rhs)
 	{
-		return (lhs._ptr - static_cast<ptrdiff_t>(rhs._ptr));
+		return (lhs.operator->() - rhs.operator->());
 	}
 
 	template <class T>
 	vector_const_iter<T> operator-(const vector_const_iter<T> &iter, const int n)
 	{
-		return (iter._ptr - n);
+		return (iter.operator->() - n);
 	}
 
 	template <class T>
 	vector_const_iter<T> operator+(const vector_const_iter<T> &iter, const int n)
 	{
-		return (iter._ptr + n);
+		return (iter.operator->() + n);
 	}
 
 	template <class T>
 	vector_const_iter<T> operator+(const int n, const vector_const_iter<T> &iter)
 	{
-		return (iter._ptr + n);
+		return (iter.operator->() + n);
 	}
 }
