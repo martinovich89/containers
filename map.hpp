@@ -63,7 +63,7 @@ namespace ft
 
 		private :
 			// ATTRIBUTES
-			Rbtree<key_type, value_type, key_compare, allocator_type>	_tree;
+			Rbtree<key_type, value_type, value_compare, allocator_type>	_tree;
 	
 		public :
 			// CONSTRUCTORS
