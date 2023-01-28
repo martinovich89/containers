@@ -38,8 +38,7 @@ namespace ft
 
 	    pair() : first(T1()), second(T2()) {}
 	    pair(const T1 &x, const T2 &y) : first(x), second(y) {}
-	    template <class U, class V>
-	    pair(const pair<U, V> &pr) : first(pr.first), second(pr.second) {}
+	    pair(const pair<T1, T2> &pr) : first(pr.first), second(pr.second) {}
 
 	    pair<T1, T2> &operator=(const pair<T1, T2> &other)
 	    {

@@ -1,17 +1,17 @@
 namespace ft
 {
 	template < class Key, class T, class Vcomp, class Alloc>
-	Rbtree<Key, T, Vcomp, Alloc>::Rbtree() : _comp(), _root(NULL), _size(0), _alloc()
+	Rbtree<Key, T, Vcomp, Alloc>::Rbtree(const Vcomp &comp) : _comp(comp), _root(NULL), _size(0), _alloc()
 	{
 		
 	}
 
-	template < class Key, class T, class Vcomp, class Alloc >
-	Rbtree<Key, T, Vcomp, Alloc>::Rbtree(const Vcomp &comp, const Alloc &alloc)
-		: _comp(comp), _root(NULL), _size(0), _alloc(alloc)
-	{
+	// template < class Key, class T, class Vcomp, class Alloc >
+	// Rbtree<Key, T, Vcomp, Alloc>::Rbtree(const Vcomp &comp, const Alloc &alloc)
+	// 	: _comp(comp), _root(NULL), _size(0), _alloc(alloc)
+	// {
 		
-	}
+	// }
 
 	template < class Key, class T, class Vcomp, class Alloc >
 	Rbtree<Key, T, Vcomp, Alloc>::Rbtree(const Rbtree &other)
@@ -172,14 +172,14 @@ namespace ft
 
 	// add_node function
 	template < class Key, class T, class Vcomp, class Alloc >
-	void Rbtree<Key, T, Vcomp, Alloc>::add_node(node *new_node)
+	typename Rbtree<Key, T, Vcomp, Alloc>::node *Rbtree<Key, T, Vcomp, Alloc>::add_node(node *new_node)
 	{
 		if (_root == NULL)
 		{
 			_root = new_node;
 			_root->_color = false;
 			_size++;
-			return ;
+			return  NULL;
 		}
 		node *current = _root;
 		while (current != NULL)
@@ -207,17 +207,18 @@ namespace ft
 		}
 		_size++;
 		rebalance(new_node);
+		return (new_node);
 	}
 
 	// // add_node function using T data
 	template < class Key, class T, class Vcomp, class Alloc >
-	T &Rbtree<Key, T, Vcomp, Alloc>::add_node(const T &data)
+	typename Rbtree<Key, T, Vcomp, Alloc>::node *Rbtree<Key, T, Vcomp, Alloc>::add_node(const T &data)
 	{
 		typename Alloc::template rebind<node>::other allocator;
 		node *new_node = allocator.allocate(1);
 		allocator.construct(new_node, data);
 		add_node(new_node);
-		return new_node->_data;
+		return new_node;
 	}
 
 	template < class Key, class T, class Vcomp, class Alloc >

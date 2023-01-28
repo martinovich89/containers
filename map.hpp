@@ -14,6 +14,7 @@
 #include "rbtree.hpp"
 #include "pair.hpp"
 
+
 namespace ft
 {
 	template<
@@ -29,14 +30,15 @@ namespace ft
 			typedef T															mapped_type;
 			typedef pair<const key_type, mapped_type>							value_type;
 			typedef Compare														key_compare;
+			class																value_compare;
 			typedef Allocator													allocator_type;
 			typedef typename allocator_type::reference							reference;
 			typedef typename allocator_type::const_reference					const_reference;
 			typedef typename allocator_type::pointer							pointer;
 			typedef typename allocator_type::const_pointer						const_pointer;
 			// iterator typedefs taking rbtree as a base
-			typedef ft::RbtreeIter<value_type, Compare, allocator_type>			iterator;
-			typedef ft::RbtreeIter<const value_type, Compare, allocator_type>	const_iterator;
+			typedef ft::RbtreeIter<value_type, value_compare, allocator_type>			iterator;
+			typedef ft::RbtreeIter<const value_type, value_compare, allocator_type>	const_iterator;
 			typedef ft::reverse_iterator<iterator>								reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>						const_reverse_iterator;
 			typedef ptrdiff_t													difference_type;
@@ -63,6 +65,8 @@ namespace ft
 
 		private :
 			// ATTRIBUTES
+			key_compare _comp;
+			value_compare _vcomp;
 			Rbtree<key_type, value_type, value_compare, allocator_type>	_tree;
 	
 		public :

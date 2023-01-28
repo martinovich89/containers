@@ -3,7 +3,7 @@ namespace ft
 	// CONSTRUCTORS
 	template <class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc>::map()
-		: _tree()
+		: _comp(), _vcomp(_comp), _tree(_vcomp)
 	{
 		
 	}
@@ -50,25 +50,25 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator map<Key, T, Compare, Alloc>::begin()
 	{
-		
+		return(_tree.begin());
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_iterator map<Key, T, Compare, Alloc>::begin() const
 	{
-		
+		return (_tree.begin());
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator map<Key, T, Compare, Alloc>::end()
 	{
-		return iterator(NULL);
+		return (_tree.end());
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_iterator map<Key, T, Compare, Alloc>::end() const
 	{
-		return const_iterator(NULL);
+		return (_tree.end());
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -127,7 +127,8 @@ namespace ft
 	typename ft::pair< typename map<Key, T, Compare, Alloc>::iterator, bool> map<Key, T, Compare, Alloc>::insert(const typename map<Key, T, Compare, Alloc>::value_type &val)
 	{
 		// use the Rbtree add_node function
-		return (_tree.add_node(val));
+		iterator it(_tree.add_node(val));
+		return (ft::pair<iterator, bool> (it, true));
 	}
 
 	template <class Key, class T, class Compare, class Alloc>

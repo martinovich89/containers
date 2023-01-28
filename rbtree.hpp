@@ -133,8 +133,8 @@ namespace ft
 			typedef T* pointer;
 
 
-			Rbtree();
-			Rbtree(const Vcomp &comp, const Alloc &alloc = Alloc());
+			Rbtree(const Vcomp &comp);
+			// Rbtree(const Vcomp &comp, const Alloc &alloc = Alloc());
 			~Rbtree();
 			Rbtree(const Rbtree &other);
 			Rbtree &operator=(const Rbtree &other);
@@ -152,9 +152,9 @@ namespace ft
 			size_type	size() const;
 
 			iterator find_node(const T &);
-			T &add_node(const T &data);
+			node *add_node(const T &data);
 			iterator add_node(const T &data, const void *hint);
-			void add_node(node *new_node);
+			node *add_node(node *new_node);
 			// void add_node(node *current, node *other);
 			void delete_node(const T &data);
 			void delete_node(iterator it);
