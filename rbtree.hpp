@@ -141,6 +141,8 @@ namespace ft
 
 			iterator begin();
 			iterator end();
+			const_iterator begin() const;
+			const_iterator end() const;
 
 			node *copy(node *other);
 			void clear();

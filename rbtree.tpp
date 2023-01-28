@@ -248,6 +248,22 @@ namespace ft
 		return iterator(current);
 	}
 
+	template < class Key, class T, class Vcomp, class Alloc >
+	typename Rbtree<Key, T, Vcomp, Alloc>::const_iterator Rbtree<Key, T, Vcomp, Alloc>::begin() const
+	{
+		node *current = _root;
+		while (current->_left != NULL)
+			current = current->_left;
+		return const_iterator(current);
+	}
+
+	template < class Key, class T, class Vcomp, class Alloc >
+	typename Rbtree<Key, T, Vcomp, Alloc>::const_iterator Rbtree<Key, T, Vcomp, Alloc>::end() const
+	{
+		node *current = NULL;
+		return const_iterator(current);
+	}
+
 	// delete_node function using value
 	template < class Key, class T, class Vcomp, class Alloc >
 	void Rbtree<Key, T, Vcomp, Alloc>::delete_node(const T &value)
