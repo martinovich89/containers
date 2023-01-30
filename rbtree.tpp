@@ -264,6 +264,40 @@ namespace ft
 		return const_iterator(current);
 	}
 
+	// find_node function
+	// template < class Key, class T, class Vcomp, class Alloc >
+	// typename Rbtree<Key, T, Vcomp, Alloc>::node *Rbtree<Key, T, Vcomp, Alloc>::find_node(const T &value) const
+	// {
+	// 	node *current = _root;
+	// 	while (current != NULL)
+	// 	{
+	// 		if (_comp(value, current->_data))
+	// 			current = current->_left;
+	// 		else if (_comp(current->_data, value))
+	// 			current = current->_right;
+	// 		else
+	// 			break ;
+	// 	}
+	// 	return current;
+	// }
+
+	// find_node function with const
+	template < class Key, class T, class Vcomp, class Alloc >
+	typename Rbtree<Key, T, Vcomp, Alloc>::node *Rbtree<Key, T, Vcomp, Alloc>::find_node(const T &value) const
+	{
+		node *current = _root;
+		while (current != NULL)
+		{
+			if (_comp(value, current->_data))
+				current = current->_left;
+			else if (_comp(current->_data, value))
+				current = current->_right;
+			else
+				break ;
+		}
+		return current;
+	}
+
 	// delete_node function using value
 	template < class Key, class T, class Vcomp, class Alloc >
 	void Rbtree<Key, T, Vcomp, Alloc>::delete_node(const T &value)

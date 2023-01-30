@@ -116,6 +116,23 @@ namespace ft
 
 	// ELEMENT ACCESS
 	template <class Key, class T, class Compare, class Alloc>
+	typename map<Key, T, Compare, Alloc>::iterator map<Key, T, Compare, Alloc>::find(const Key &k)
+	{
+		// pair<Key, T> new_pair = make_pair(k, T());
+		// return iterator(_tree.find_node(new_pair));
+	    pair<const Key, T> new_pair(k, T());
+	    typename Rbtree<Key, value_type, value_compare, Alloc>::node *found_node = _tree.find_node(new_pair);
+	    return iterator(found_node);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	typename map<Key, T, Compare, Alloc>::const_iterator map<Key, T, Compare, Alloc>::find(const key_type &k) const
+	{
+		return _tree.find_node(k);
+	}
+
+
+	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::mapped_type &map<Key, T, Compare, Alloc>::operator[](const key_type &k)
 	{
 		// access element
@@ -150,20 +167,28 @@ namespace ft
 	void map<Key, T, Compare, Alloc>::erase(iterator position)
 	{
 		// use the redblack tree delete function
-		(void)(position);
+		_tree.delete_node(position.getNode());
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	size_t map<Key, T, Compare, Alloc>::erase(const key_type &k)
 	{
-		(void)k;
+		// find the node and delete it
+		iterator it = find(k);
+		if (it != end())
+		{
+			erase(it);
+			return (1);
+		}
+		return (0);
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	void map<Key, T, Compare, Alloc>::erase(iterator first, iterator last)
 	{
-		(void)(first);
-		(void)(last);
+		// iterate through the list and delete each node
+		while (first != last)
+			erase(first++);
 	}
 
 	template <class Key, class T, class Compare, class Alloc>

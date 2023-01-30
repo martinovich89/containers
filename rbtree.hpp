@@ -4,6 +4,7 @@
 #include <iostream>
 #include <algorithm>
 #include <functional>
+#include "pair.hpp"
 // #include "iterator_traits.hpp"
 // #include "map.hpp"
 // #include "pair.hpp"
@@ -119,7 +120,7 @@ namespace ft
 			TreeNode<T, Vcomp, Alloc> *_node;
 	};
 
-	template < class Key, class T = int, class Vcomp = std::less<T>, class Alloc = std::allocator<T> >
+	template < class Key, class T, class Vcomp = std::less<T>, class Alloc = std::allocator<T> >
 	class Rbtree
 	{
 		public :
@@ -153,7 +154,8 @@ namespace ft
 			Vcomp &comp() const;
 			size_type	size() const;
 
-			iterator find_node(const T &);
+			node *find_node(const T &value) const;
+			// node *find_node(const T &value) const;
 			node *add_node(const T &data);
 			iterator add_node(const T &data, const void *hint);
 			node *add_node(node *new_node);

@@ -100,6 +100,8 @@ namespace ft
 			size_type max_size() const;
 
 			// ELEMENT ACCESS
+			iterator find( const Key& key );
+			const_iterator find( const Key& key ) const;
 			mapped_type &operator[](const key_type &k);
 			mapped_type &at(const key_type &k);
 			const mapped_type &at(const key_type &k) const;
