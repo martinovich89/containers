@@ -127,6 +127,7 @@ namespace ft
 			// OBSERVERS
 			key_compare key_comp() const;
 			value_compare value_comp() const;
+			size_type count( const Key& key ) const;
 	};
 }
 

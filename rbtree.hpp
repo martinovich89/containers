@@ -154,7 +154,7 @@ namespace ft
 			const_iterator begin() const;
 			const_iterator end() const;
 
-			node *copy(node *other);
+			node *copy(node *other, node *parent);
 			void clear();
 			void clear(node *node);
 

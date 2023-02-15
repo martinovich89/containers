@@ -43,7 +43,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc> &map<Key, T, Compare, Alloc>::operator=(const map &x)
 	{
-		_tree.copy(x._tree.root());
+		_tree.operator=(x._tree);
 		return (*this);
 	}
 
@@ -189,7 +189,8 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_iterator map<Key, T, Compare, Alloc>::find(const key_type &k) const
 	{
-		return _tree.find_node(k);
+		pair<const Key, T> new_pair(k, T());
+		return const_iterator(_tree.find_node(new_pair), &_tree);
 	}
 
 
@@ -242,7 +243,10 @@ namespace ft
 	void map<Key, T, Compare, Alloc>::insert(InputIterator first, InputIterator last)
 	{
 		for (; first != last; ++first)
-			insert(*first);
+		{
+			if (find(first->first) == end())
+				insert(*first);
+		}
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -295,6 +299,17 @@ namespace ft
 	typename map<Key, T, Compare, Alloc>::value_compare map<Key, T, Compare, Alloc>::value_comp() const
 	{
 		return value_compare(_tree.comp());
+	}
+
+	// count
+	template <class Key, class T, class Compare, class Alloc>
+	typename map<Key, T, Compare, Alloc>::size_type map<Key, T, Compare, Alloc>::count(const key_type &k) const
+	{
+		// find the node and delete it
+		const_iterator it = find(k);
+		if (it != end())
+			return (1);
+		return (0);
 	}
 
 }

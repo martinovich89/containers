@@ -15,7 +15,7 @@ namespace ft
 
 	template < class T, class Vcomp, class Alloc >
 	Rbtree<T, Vcomp, Alloc>::Rbtree(const Rbtree &other)
-		: _comp(other._comp), _size(other._size), _alloc(other._alloc), _root(copy(other._root))
+		: _comp(other._comp), _size(other._size), _alloc(other._alloc), _root(copy(other._root, NULL))
 	{
 
 	}
@@ -32,22 +32,23 @@ namespace ft
 		if (this != &other)
 		{
 			clear();
-			_root = copy(other._root);
+			_root = copy(other._root, NULL);
 			_size = other._size;
 		}
 		return *this;
 	}
 
 	template < class T, class Vcomp, class Alloc >
-	typename Rbtree<T, Vcomp, Alloc>::node *Rbtree<T, Vcomp, Alloc>::copy(node *other)
+	typename Rbtree<T, Vcomp, Alloc>::node *Rbtree<T, Vcomp, Alloc>::copy(node *other, node * parent)
 	{
 		if (other == NULL)
 			return NULL;
 		typename Alloc::template rebind<node>::other allocator;
 		node *new_node =  allocator.allocate(1);
 		allocator.construct(new_node, *other);
-		new_node->_left = copy(other->_left);
-		new_node->_right = copy(other->_right);
+		new_node->_parent = parent;
+		new_node->_left = copy(other->_left, new_node);
+		new_node->_right = copy(other->_right, new_node);
 		return new_node;
 	}
 
@@ -230,7 +231,7 @@ namespace ft
 		node *new_node = allocator.allocate(1, hint);
 		allocator.construct(new_node, data);
 		add_node(new_node);
-		return iterator(new_node);
+		return iterator(new_node, this);
 	}
 
 	// begin and end
@@ -238,6 +239,8 @@ namespace ft
 	typename Rbtree<T, Vcomp, Alloc>::iterator Rbtree<T, Vcomp, Alloc>::begin()
 	{
 		node *current = _root;
+		if (current == NULL)
+			return end();
 		while (current->_left != NULL)
 			current = current->_left;
 		return iterator(current, this);
@@ -375,6 +378,8 @@ namespace ft
 			else
 			{
 				node *sibling = current->_parent->_left;
+				if (sibling == NULL)
+					return ;
 				if (sibling->_color == RED)
 				{
 					sibling->_color = BLACK;
@@ -382,6 +387,8 @@ namespace ft
 					rotate_right(current->_parent);
 					sibling = current->_parent->_left;
 				}
+				if (sibling->_right == NULL || sibling->_left == NULL)
+					return ;
 				if (sibling->_right->_color == BLACK && sibling->_left->_color == BLACK)
 				{
 					sibling->_color = RED;
