@@ -1,32 +1,33 @@
 namespace ft
 {
-	template < class Key, class T, class Vcomp, class Alloc>
-	Rbtree<Key, T, Vcomp, Alloc>::Rbtree(const Vcomp &comp) : _comp(comp), _root(NULL), _size(0), _alloc()
+	template < class T, class Vcomp, class Alloc >
+	Rbtree<T, Vcomp, Alloc>::Rbtree(const Vcomp &comp, const Alloc &alloc) : _comp(comp), _size(0), _alloc(alloc), _root()
 	{
 		
 	}
 
-	// template < class Key, class T, class Vcomp, class Alloc >
-	// Rbtree<Key, T, Vcomp, Alloc>::Rbtree(const Vcomp &comp, const Alloc &alloc)
+	// template < class T, class Vcomp, class Alloc >
+	// Rbtree<T, Vcomp, Alloc>::Rbtree(const Vcomp &comp, const Alloc &alloc)
 	// 	: _comp(comp), _root(NULL), _size(0), _alloc(alloc)
 	// {
 		
 	// }
 
-	template < class Key, class T, class Vcomp, class Alloc >
-	Rbtree<Key, T, Vcomp, Alloc>::Rbtree(const Rbtree &other)
+	template < class T, class Vcomp, class Alloc >
+	Rbtree<T, Vcomp, Alloc>::Rbtree(const Rbtree &other)
+		: _comp(other._comp), _size(other._size), _alloc(other._alloc), _root(copy(other._root))
 	{
-		*this = other;
+
 	}
 
-	template < class Key, class T, class Vcomp, class Alloc >
-	Rbtree<Key, T, Vcomp, Alloc>::~Rbtree()
+	template < class T, class Vcomp, class Alloc >
+	Rbtree<T, Vcomp, Alloc>::~Rbtree()
 	{
 		clear();
 	}
 
-	template < class Key, class T, class Vcomp, class Alloc >
-	Rbtree<Key, T, Vcomp, Alloc> &Rbtree<Key, T, Vcomp, Alloc>::operator=(const Rbtree &other)
+	template < class T, class Vcomp, class Alloc >
+	Rbtree<T, Vcomp, Alloc> &Rbtree<T, Vcomp, Alloc>::operator=(const Rbtree &other)
 	{
 		if (this != &other)
 		{
@@ -37,8 +38,8 @@ namespace ft
 		return *this;
 	}
 
-	template < class Key, class T, class Vcomp, class Alloc >
-	typename Rbtree<Key, T, Vcomp, Alloc>::node *Rbtree<Key, T, Vcomp, Alloc>::copy(node *other)
+	template < class T, class Vcomp, class Alloc >
+	typename Rbtree<T, Vcomp, Alloc>::node *Rbtree<T, Vcomp, Alloc>::copy(node *other)
 	{
 		if (other == NULL)
 			return NULL;
@@ -50,16 +51,16 @@ namespace ft
 		return new_node;
 	}
 
-	template < class Key, class T, class Vcomp, class Alloc >
-	void Rbtree<Key, T, Vcomp, Alloc>::clear()
+	template < class T, class Vcomp, class Alloc >
+	void Rbtree<T, Vcomp, Alloc>::clear()
 	{
 		clear(_root);
 		_root = NULL;
 		_size = 0;
 	}
 
-	template < class Key, class T, class Vcomp, class Alloc >
-	void Rbtree<Key, T, Vcomp, Alloc>::clear(node *node)
+	template < class T, class Vcomp, class Alloc >
+	void Rbtree<T, Vcomp, Alloc>::clear(node *node)
 	{
 		if (node == NULL)
 			return ;
@@ -70,30 +71,30 @@ namespace ft
 
 	// ACCESS FUNCTIONS
 		// get root
-	template < class Key, class T, class Vcomp, class Alloc >
-	TreeNode<T, Vcomp, Alloc> &Rbtree<Key, T, Vcomp, Alloc>::root() const
+	template < class T, class Vcomp, class Alloc >
+	TreeNode<T, Vcomp, Alloc> *Rbtree<T, Vcomp, Alloc>::root() const
 	{
 		return _root;
 	}
 
 		// get comp
-	template < class Key, class T, class Vcomp, class Alloc >
-	Vcomp &Rbtree<Key, T, Vcomp, Alloc>::comp() const
+	template < class T, class Vcomp, class Alloc >
+	const Vcomp &Rbtree<T, Vcomp, Alloc>::comp() const
 	{
 		return _comp;
 	}
 
 		// get size
-	template < class Key, class T, class Vcomp, class Alloc >
-	typename Rbtree<Key, T, Vcomp, Alloc>::size_type Rbtree<Key, T, Vcomp, Alloc>::size() const
+	template < class T, class Vcomp, class Alloc >
+	typename Rbtree<T, Vcomp, Alloc>::size_type Rbtree<T, Vcomp, Alloc>::size() const
 	{
 		return _size;
 	}
 
 	// rotate_left function
 
-	template < class Key, class T, class Vcomp, class Alloc >
-	void Rbtree<Key, T, Vcomp, Alloc>::rotate_left(node *current)
+	template < class T, class Vcomp, class Alloc >
+	void Rbtree<T, Vcomp, Alloc>::rotate_left(node *current)
 	{
 		node *right = current->_right;
 		current->_right = right->_left;
@@ -111,8 +112,8 @@ namespace ft
 	}
 
 	// rotate_right function
-	template < class Key, class T, class Vcomp, class Alloc >
-	void Rbtree<Key, T, Vcomp, Alloc>::rotate_right(node *current)
+	template < class T, class Vcomp, class Alloc >
+	void Rbtree<T, Vcomp, Alloc>::rotate_right(node *current)
 	{
 		node *left = current->_left;
 		current->_left = left->_right;
@@ -130,8 +131,8 @@ namespace ft
 	}
 
 	// rebalance function
-	template < class Key, class T, class Vcomp, class Alloc >
-	void Rbtree<Key, T, Vcomp, Alloc>::rebalance(node *current)
+	template < class T, class Vcomp, class Alloc >
+	void Rbtree<T, Vcomp, Alloc>::rebalance(node *current)
 	{
 		if (current == _root)
 		{
@@ -171,8 +172,8 @@ namespace ft
 	}
 
 	// add_node function
-	template < class Key, class T, class Vcomp, class Alloc >
-	typename Rbtree<Key, T, Vcomp, Alloc>::node *Rbtree<Key, T, Vcomp, Alloc>::add_node(node *new_node)
+	template < class T, class Vcomp, class Alloc >
+	typename Rbtree<T, Vcomp, Alloc>::node *Rbtree<T, Vcomp, Alloc>::add_node(node *new_node)
 	{
 		if (_root == NULL)
 		{
@@ -211,9 +212,10 @@ namespace ft
 	}
 
 	// // add_node function using T data
-	template < class Key, class T, class Vcomp, class Alloc >
-	typename Rbtree<Key, T, Vcomp, Alloc>::node *Rbtree<Key, T, Vcomp, Alloc>::add_node(const T &data)
+	template < class T, class Vcomp, class Alloc >
+	typename Rbtree<T, Vcomp, Alloc>::node *Rbtree<T, Vcomp, Alloc>::add_node(const T &data)
 	{
+		// std::cout << "LOL" << std::endl;
 		typename Alloc::template rebind<node>::other allocator;
 		node *new_node = allocator.allocate(1);
 		allocator.construct(new_node, data);
@@ -221,8 +223,8 @@ namespace ft
 		return new_node;
 	}
 
-	template < class Key, class T, class Vcomp, class Alloc >
-	typename Rbtree<Key, T, Vcomp, Alloc>::iterator Rbtree<Key, T, Vcomp, Alloc>::add_node(const T &data, const void *hint)
+	template < class T, class Vcomp, class Alloc >
+	typename Rbtree<T, Vcomp, Alloc>::iterator Rbtree<T, Vcomp, Alloc>::add_node(const T &data, const void *hint)
 	{
 		typename Alloc::template rebind<node>::other allocator;
 		node *new_node = allocator.allocate(1, hint);
@@ -232,41 +234,43 @@ namespace ft
 	}
 
 	// begin and end
-	template < class Key, class T, class Vcomp, class Alloc >
-	typename Rbtree<Key, T, Vcomp, Alloc>::iterator Rbtree<Key, T, Vcomp, Alloc>::begin()
+	template < class T, class Vcomp, class Alloc >
+	typename Rbtree<T, Vcomp, Alloc>::iterator Rbtree<T, Vcomp, Alloc>::begin()
 	{
 		node *current = _root;
 		while (current->_left != NULL)
 			current = current->_left;
-		return iterator(current);
+		return iterator(current, this);
 	}
 
-	template < class Key, class T, class Vcomp, class Alloc >
-	typename Rbtree<Key, T, Vcomp, Alloc>::iterator Rbtree<Key, T, Vcomp, Alloc>::end()
+	template < class T, class Vcomp, class Alloc >
+	typename Rbtree<T, Vcomp, Alloc>::iterator Rbtree<T, Vcomp, Alloc>::end()
 	{
 		node *current = NULL;
-		return iterator(current);
+		return iterator(current, this);
 	}
 
-	template < class Key, class T, class Vcomp, class Alloc >
-	typename Rbtree<Key, T, Vcomp, Alloc>::const_iterator Rbtree<Key, T, Vcomp, Alloc>::begin() const
+	template < class T, class Vcomp, class Alloc >
+	typename Rbtree<T, Vcomp, Alloc>::const_iterator Rbtree<T, Vcomp, Alloc>::begin() const
 	{
+		if (_root == NULL)
+			return end();
 		node *current = _root;
 		while (current->_left != NULL)
 			current = current->_left;
-		return const_iterator(current);
+		return const_iterator(current, this);
 	}
 
-	template < class Key, class T, class Vcomp, class Alloc >
-	typename Rbtree<Key, T, Vcomp, Alloc>::const_iterator Rbtree<Key, T, Vcomp, Alloc>::end() const
+	template < class T, class Vcomp, class Alloc >
+	typename Rbtree<T, Vcomp, Alloc>::const_iterator Rbtree<T, Vcomp, Alloc>::end() const
 	{
 		node *current = NULL;
-		return const_iterator(current);
+		return const_iterator(current, this);
 	}
 
 	// find_node function
-	// template < class Key, class T, class Vcomp, class Alloc >
-	// typename Rbtree<Key, T, Vcomp, Alloc>::node *Rbtree<Key, T, Vcomp, Alloc>::find_node(const T &value) const
+	// template < class T, class Vcomp, class Alloc >
+	// typename Rbtree<T, Vcomp, Alloc>::node *Rbtree<T, Vcomp, Alloc>::find_node(const T &value) const
 	// {
 	// 	node *current = _root;
 	// 	while (current != NULL)
@@ -282,8 +286,8 @@ namespace ft
 	// }
 
 	// find_node function with const
-	template < class Key, class T, class Vcomp, class Alloc >
-	typename Rbtree<Key, T, Vcomp, Alloc>::node *Rbtree<Key, T, Vcomp, Alloc>::find_node(const T &value) const
+	template < class T, class Vcomp, class Alloc >
+	typename Rbtree<T, Vcomp, Alloc>::node *Rbtree<T, Vcomp, Alloc>::find_node(const T &value) const
 	{
 		node *current = _root;
 		while (current != NULL)
@@ -299,27 +303,19 @@ namespace ft
 	}
 
 	// delete_node function using value
-	template < class Key, class T, class Vcomp, class Alloc >
-	void Rbtree<Key, T, Vcomp, Alloc>::delete_node(const T &value)
+	template < class T, class Vcomp, class Alloc >
+	void Rbtree<T, Vcomp, Alloc>::delete_node(const T &value)
 	{
-		node *current = _root;
-		while (current != NULL)
-		{
-			if (_comp(value, current->_data))
-				current = current->_left;
-			else if (_comp(current->_data, value))
-				current = current->_right;
-			else
-				break ;
-		}
+		std::cout << "delete_node" << std::endl;
+		node *current = find_node(value);
 		if (current == NULL)
 			return ;
 		delete_node(current);
 	}
 
 	//	transplant function
-	template < class Key, class T, class Vcomp, class Alloc >
-	void Rbtree<Key, T, Vcomp, Alloc>::transplant(node *current, node *child)
+	template < class T, class Vcomp, class Alloc >
+	void Rbtree<T, Vcomp, Alloc>::transplant(node *current, node *child)
 	{
 		if (current->_parent == NULL)
 			_root = child;
@@ -332,101 +328,132 @@ namespace ft
 	}
 
 	// minimum function
-	template < class Key, class T, class Vcomp, class Alloc >
-	typename Rbtree<Key, T, Vcomp, Alloc>::node *Rbtree<Key, T, Vcomp, Alloc>::minimum(node *current)
+	template < class T, class Vcomp, class Alloc >
+	typename Rbtree<T, Vcomp, Alloc>::node *Rbtree<T, Vcomp, Alloc>::minimum(node *current)
 	{
 		while (current->_left != NULL)
 			current = current->_left;
 		return current;
 	}
 
-	// rebalance_delete function
-	template < class Key, class T, class Vcomp, class Alloc >
-	void Rbtree<Key, T, Vcomp, Alloc>::rebalance_delete(node *current)
+	template < class T, class Vcomp, class Alloc >
+	void Rbtree<T, Vcomp, Alloc>::rebalance_delete(node *current)
 	{
-	    while (current != _root && current->_color == false)
-	    {
-	        if (current->_parent == NULL)
-	            return;
-	        if (current == current->_parent->_left)
-	        {
-	            node *brother = current->_parent->_right;
-	            if (brother == NULL)
-	                return;
-	            if (brother->_color == true)
-	            {
-	                brother->_color = false;
-	                current->_parent->_color = true;
-	                rotate_left(current->_parent);
-	                brother = current->_parent->_right;
-	            }
-	            if (brother->_left == NULL || brother->_right == NULL)
-	                return;
-	            if (brother->_left->_color == false && brother->_right->_color == false)
-	            {
-	                brother->_color = true;
-	                current = current->_parent;
-	            }
-	            else
-	            {
-	                if (brother->_right->_color == false)
-	                {
-	                    brother->_left->_color = false;
-	                    brother->_color = true;
-	                    rotate_right(brother);
-	                    brother = current->_parent->_right;
-	                }
-	                brother->_color = current->_parent->_color;
-	                current->_parent->_color = false;
-	                brother->_right->_color = false;
-	                rotate_left(current->_parent);
-	                current = _root;
-	            }
-	        }
-	        else
-	        {
-	            node *brother = current->_parent->_left;
-	            if (brother == NULL)
-	                return;
-	            if (brother->_color == true)
-	            {
-	                brother->_color = false;
-	                current->_parent->_color = true;
-	                rotate_right(current->_parent);
-	                brother = current->_parent->_left;
-	            }
-	            if (brother->_right == NULL || brother->_left == NULL)
-	                return;
-	            if (brother->_right->_color == false && brother->_left->_color == false)
-	            {
-	                brother->_color = true;
-	                current = current->_parent;
-	            }
-	            else
-	            {
-	                if (brother->_left->_color == false)
-	                {
-	                    brother->_right->_color = false;
-	                    brother->_color = true;
-	                    rotate_left(brother);
-	                    brother = current->_parent->_left;
-	                }
-	                brother->_color = current->_parent->_color;
-	                current->_parent->_color = false;
-	                brother->_left->_color = false;
-	                rotate_right(current->_parent);
-	                current = _root;
-	            }
-	        }
-	    }
-		current->_color = false;
+		while (current != _root && current->_color == BLACK)
+		{
+			if (current == current->_parent->_left)
+			{
+				node *sibling = current->_parent->_right;
+				if (sibling->_color == RED)
+				{
+					sibling->_color = BLACK;
+					current->_parent->_color = RED;
+					rotate_left(current->_parent);
+					sibling = current->_parent->_right;
+				}
+				if (sibling->_left->_color == BLACK && sibling->_right->_color == BLACK)
+				{
+					sibling->_color = RED;
+					current = current->_parent;
+				}
+				else
+				{
+					if (sibling->_right->_color == BLACK)
+					{
+						sibling->_left->_color = BLACK;
+						sibling->_color = RED;
+						rotate_right(sibling);
+						sibling = current->_parent->_right;
+					}
+					sibling->_color = current->_parent->_color;
+					current->_parent->_color = BLACK;
+					sibling->_right->_color = BLACK;
+					rotate_left(current->_parent);
+					current = _root;
+				}
+			}
+			else
+			{
+				node *sibling = current->_parent->_left;
+				if (sibling->_color == RED)
+				{
+					sibling->_color = BLACK;
+					current->_parent->_color = RED;
+					rotate_right(current->_parent);
+					sibling = current->_parent->_left;
+				}
+				if (sibling->_right->_color == BLACK && sibling->_left->_color == BLACK)
+				{
+					sibling->_color = RED;
+					current = current->_parent;
+				}
+				else
+				{
+					if (sibling->_left->_color == BLACK)
+					{
+						sibling->_right->_color = BLACK;
+						sibling->_color = RED;
+						rotate_left(sibling);
+						sibling = current->_parent->_left;
+					}
+					sibling->_color = current->_parent->_color;
+					current->_parent->_color = BLACK;
+					sibling->_left->_color = BLACK;
+					rotate_right(current->_parent);
+					current = _root;
+				}
+			}
+		}
+		current->_color = BLACK;
 	}
 
 	// delete_node function using iterator, using rebalance function
-	template < class Key, class T, class Vcomp, class Alloc >
-	void Rbtree<Key, T, Vcomp, Alloc>::delete_node(iterator it)
+	// template < class T, class Vcomp, class Alloc >
+	// void Rbtree<T, Vcomp, Alloc>::delete_node(iterator it)
+	// {
+	// 	// std::cout << "LOL" << std::endl;
+	// 	node *current = it.getNode();
+	// 	node *tmp = current;
+	// 	node *child = NULL;
+	// 	bool color = current->_color;
+
+	// 	if (current->_left == NULL)
+	// 	{
+	// 		child = current->_right;
+	// 		transplant(current, current->_right);
+	// 	}
+	// 	else if (current->_right == NULL)
+	// 	{
+	// 		child = current->_left;
+	// 		transplant(current, current->_left);
+	// 	}
+	// 	else
+	// 	{
+	// 		tmp = minimum(current->_right);
+	// 		color = tmp->_color;
+	// 		child = tmp->_right;
+	// 		if (tmp->_parent == current)
+	// 			child->_parent = tmp;
+	// 		else
+	// 		{
+	// 			transplant(tmp, tmp->_right);
+	// 			tmp->_right = current->_right;
+	// 			tmp->_right->_parent = tmp;
+	// 		}
+	// 		transplant(current, tmp);
+	// 		tmp->_left = current->_left;
+	// 		tmp->_left->_parent = tmp;
+	// 		tmp->_color = current->_color;
+	// 	}
+	// 	if (color == false && child != NULL)
+	// 		rebalance_delete(child);
+	// 	delete current;
+	// 	_size--;
+	// }
+
+	template < class T, class Vcomp, class Alloc >
+	void Rbtree<T, Vcomp, Alloc>::delete_node(node *current)
 	{
-		node *current = it.getNode();
 		node *tmp = current;
 		node *child = NULL;
 		bool color = current->_color;
@@ -466,15 +493,21 @@ namespace ft
 	}
 
 	// delete node using iterator range
-	template < class Key, class T, class Vcomp, class Alloc >
-	void Rbtree<Key, T, Vcomp, Alloc>::delete_range(iterator first, iterator last)
+	template < class T, class Vcomp, class Alloc >
+	void Rbtree<T, Vcomp, Alloc>::delete_range(iterator first, iterator last)
 	{
 		while (first != last)
 		{
 			iterator tmp = first;
 			first++;
-			delete_node(tmp);
+			delete_node(tmp.getNode());
 		}
+	}
+
+	template < class T, class Vcomp, class Alloc >
+	size_t Rbtree<T, Vcomp, Alloc>::max_size() const
+	{
+		return (_alloc.max_size());
 	}
 
 }

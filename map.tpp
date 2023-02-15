@@ -11,7 +11,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc>::map(const key_compare &comp,
 									 const allocator_type &alloc)
-		: _tree(comp, alloc)
+		: _comp(comp), _vcomp(_comp), _tree(_vcomp, alloc)
 	{
 		
 	}
@@ -21,14 +21,14 @@ namespace ft
 	map<Key, T, Compare, Alloc>::map(InputIterator first, InputIterator last,
 									 const key_compare &comp,
 									 const allocator_type &alloc)
-		: _tree(first, last, comp, alloc)
+		: _comp(comp), _vcomp(_comp), _tree(_vcomp, alloc)
 	{
-		
+		insert(first, last);
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc>::map(const map &x)
-		: _tree(x._tree)
+		: _comp(), _vcomp(_comp), _tree(x._tree)
 	{
 
 	}
@@ -43,7 +43,8 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	map<Key, T, Compare, Alloc> &map<Key, T, Compare, Alloc>::operator=(const map &x)
 	{
-		_tree.copy(x._tree);
+		_tree.copy(x._tree.root());
+		return (*this);
 	}
 
 	// ITERATORS
@@ -95,6 +96,62 @@ namespace ft
 		return const_reverse_iterator(NULL);
 	}
 
+	template <class Key, class T, class Compare, class Alloc>
+	typename map<Key, T, Compare, Alloc>::iterator map<Key, T, Compare, Alloc>::lower_bound(const key_type &k)
+	{
+		for (iterator it = begin(); it != end(); it++)
+		{
+			if (!_comp(it->first, k))
+				return it;
+		}
+		return end();
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	typename map<Key, T, Compare, Alloc>::const_iterator map<Key, T, Compare, Alloc>::lower_bound(const key_type &k) const
+	{
+		for (const_iterator it = begin(); it != end(); it++)
+		{
+			if (!_comp(it->first, k))
+				return it;
+		}
+		return end();
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	typename map<Key, T, Compare, Alloc>::iterator map<Key, T, Compare, Alloc>::upper_bound(const key_type &k)
+	{
+		for (iterator it = begin(); it != end(); it++)
+		{
+			if (_comp(k, it->first))
+				return it;
+		}
+		return end();
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	typename map<Key, T, Compare, Alloc>::const_iterator map<Key, T, Compare, Alloc>::upper_bound(const key_type &k) const
+	{
+		for (const_iterator it = begin(); it != end(); it++)
+		{
+			if (_comp(k, it->first))
+				return it;
+		}
+		return end();
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	pair<typename map<Key, T, Compare, Alloc>::iterator, typename map<Key, T, Compare, Alloc>::iterator> map<Key, T, Compare, Alloc>::equal_range(const key_type &k)
+	{
+		return pair<iterator, iterator>(lower_bound(k), upper_bound(k));
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	pair<typename map<Key, T, Compare, Alloc>::const_iterator, typename map<Key, T, Compare, Alloc>::const_iterator> map<Key, T, Compare, Alloc>::equal_range(const key_type &k) const
+	{
+		return pair<const_iterator, const_iterator>(lower_bound(k), upper_bound(k));
+	}
+
 	// CAPACITY
 	template <class Key, class T, class Compare, class Alloc>
 	bool map<Key, T, Compare, Alloc>::empty() const
@@ -111,7 +168,11 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::size_type map<Key, T, Compare, Alloc>::max_size() const
 	{
-		return std::numeric_limits<size_type>::max() / sizeof(_tree.find_node(0));
+		// use rebind to get the allocator type of the node
+		typedef typename Alloc::template rebind<TreeNode<value_type, value_compare, Alloc> >::other node_allocator;
+		return (node_allocator().max_size());
+		// return (std::numeric_limits<size_type>::max() / (sizeof(TreeNode<value_type, value_compare, Alloc>) * 2));
+		// return _tree.max_size();
 	}
 
 	// ELEMENT ACCESS
@@ -121,8 +182,8 @@ namespace ft
 		// pair<Key, T> new_pair = make_pair(k, T());
 		// return iterator(_tree.find_node(new_pair));
 	    pair<const Key, T> new_pair(k, T());
-	    typename Rbtree<Key, value_type, value_compare, Alloc>::node *found_node = _tree.find_node(new_pair);
-	    return iterator(found_node);
+	    typename Rbtree<value_type, value_compare, Alloc>::node *found_node = _tree.find_node(new_pair);
+	    return iterator(found_node, &_tree);
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -132,11 +193,32 @@ namespace ft
 	}
 
 
-	template <class Key, class T, class Compare, class Alloc>
-	typename map<Key, T, Compare, Alloc>::mapped_type &map<Key, T, Compare, Alloc>::operator[](const key_type &k)
+	// template <class Key, class T, class Compare, class Alloc>
+	// typename map<Key, T, Compare, Alloc>::mapped_type &map<Key, T, Compare, Alloc>::operator[](const key_type &k)
+	// {
+	// 	// access element
+	// 	mapped_type &val = find(k)->second;
+	// 	if (val == end())
+	// 	{
+	// 		// insert element
+	// 		insert(ft::pair<key_type, mapped_type>(k, mapped_type()));
+	// 	}
+	// 	return val;
+	// }
+
+	template <class Key, class T, class Compare, class Allocator>
+	T& map<Key, T, Compare, Allocator>::operator[](const Key& key)
 	{
-		// access element
-		(void)k;
+
+		if (find(key) != end())
+			return find(key)->second;
+
+		pair<const key_type, mapped_type> value(key, T());
+		pair<iterator, bool> result = insert(value);
+		if (result.second == false)
+			result.first->second = T();
+			
+		return result.first->second;
 	}
 
 	// MODIFIERS
@@ -144,7 +226,7 @@ namespace ft
 	typename ft::pair< typename map<Key, T, Compare, Alloc>::iterator, bool> map<Key, T, Compare, Alloc>::insert(const typename map<Key, T, Compare, Alloc>::value_type &val)
 	{
 		// use the Rbtree add_node function
-		iterator it(_tree.add_node(val));
+		iterator it(_tree.add_node(val), &_tree);
 		return (ft::pair<iterator, bool> (it, true));
 	}
 
@@ -206,7 +288,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::key_compare map<Key, T, Compare, Alloc>::key_comp() const
 	{
-		return _tree.comp();
+		return _comp;
 	}
 
 	template <class Key, class T, class Compare, class Alloc>

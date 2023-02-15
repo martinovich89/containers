@@ -8,8 +8,8 @@
 #include <stdexcept>
 #include <sstream>
 #include "iterator_traits.hpp"
-#include "vector_iterator.hpp"
-#include "vector_const_iterator.hpp"
+// #include "vector_iterator.hpp"
+// #include "vector_const_iterator.hpp"
 
 namespace ft
 {
@@ -94,6 +94,7 @@ namespace ft
 
 		reference operator*() const
 		{
+			// std::cout << "reverse_iterator operator*" << std::endl;
 			iterator_type tmp = _iter;
 			return const_cast< reference >(*--tmp);
 		}

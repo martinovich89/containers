@@ -1,62 +1,62 @@
 namespace ft
 {
     // SAME AS RbtreeConstIter but without const
-    template <class T, class Vcomp, class Alloc>
-    RbtreeIter<T, Vcomp, Alloc>::RbtreeIter()
+    template <class T, class Vcomp, class Tree, class Alloc>
+    RbtreeIter<T, Vcomp, Tree, Alloc>::RbtreeIter() : _node(NULL), _tree(NULL)
     {
-        _node = NULL;
+
     }
 
     // constructor that takes a pointer to a node
-    template <class T, class Vcomp, class Alloc>
-    RbtreeIter<T, Vcomp, Alloc>::RbtreeIter(TreeNode<T, Vcomp, Alloc> *node)
+    template <class T, class Vcomp, class Tree, class Alloc>
+    RbtreeIter<T, Vcomp, Tree, Alloc>::RbtreeIter(TreeNode<T, Vcomp, Alloc> *node, Tree *tree) : _node(node), _tree(tree)
     {
-        _node = node;
+
     }
 
-    template <class T, class Vcomp, class Alloc>
-    RbtreeIter<T, Vcomp, Alloc>::RbtreeIter(const RbtreeIter<T, Vcomp, Alloc> &other)
+    template <class T, class Vcomp, class Tree, class Alloc>
+    RbtreeIter<T, Vcomp, Tree, Alloc>::RbtreeIter(const RbtreeIter<T, Vcomp, Tree, Alloc> &other)
     {
         *this = other;
     }
 
-    template <class T, class Vcomp, class Alloc>
-    RbtreeIter<T, Vcomp, Alloc>::RbtreeIter(const RbtreeIter<T, Vcomp, Alloc>::pointer ptr)
+    template <class T, class Vcomp, class Tree, class Alloc>
+    RbtreeIter<T, Vcomp, Tree, Alloc>::RbtreeIter(const RbtreeIter<T, Vcomp, Tree, Alloc>::pointer ptr)
     {
         // make DEEP copy of ptr
         _node = ptr;
     }
 
     //RbtreeIter destructor
-    template <class T, class Vcomp, class Alloc>
-    RbtreeIter<T, Vcomp, Alloc>::~RbtreeIter()
+    template <class T, class Vcomp, class Tree, class Alloc>
+    RbtreeIter<T, Vcomp, Tree, Alloc>::~RbtreeIter()
     {
     }
 
     //RbtreeIter operator=
-    template <class T, class Vcomp, class Alloc>
-    RbtreeIter<T, Vcomp, Alloc> &RbtreeIter<T, Vcomp, Alloc>::operator=(const RbtreeIter<T, Vcomp, Alloc> &other)
+    template <class T, class Vcomp, class Tree, class Alloc>
+    RbtreeIter<T, Vcomp, Tree, Alloc> &RbtreeIter<T, Vcomp, Tree, Alloc>::operator=(const RbtreeIter<T, Vcomp, Tree, Alloc> &other)
     {
         _node = other._node;
         return (*this);
     }
 
     //ACCESS OPERATORS
-    template <class T, class Vcomp, class Alloc>
-    typename RbtreeIter<T, Vcomp, Alloc>::reference RbtreeIter<T, Vcomp, Alloc>::operator*() const
+    template <class T, class Vcomp, class Tree, class Alloc>
+    typename RbtreeIter<T, Vcomp, Tree, Alloc>::reference RbtreeIter<T, Vcomp, Tree, Alloc>::operator*() const
     {
         return (_node->_data);
     }
 
-    template <class T, class Vcomp, class Alloc>
-    typename RbtreeIter<T, Vcomp, Alloc>::pointer RbtreeIter<T, Vcomp, Alloc>::operator->() const
+    template <class T, class Vcomp, class Tree, class Alloc>
+    typename RbtreeIter<T, Vcomp, Tree, Alloc>::pointer RbtreeIter<T, Vcomp, Tree, Alloc>::operator->() const
     {
         return (&(_node->_data));
     }
     
     //ITERATOR OPERATORS
-    template <class T, class Vcomp, class Alloc>
-    RbtreeIter<T, Vcomp, Alloc> &RbtreeIter<T, Vcomp, Alloc>::operator++()
+    template <class T, class Vcomp, class Tree, class Alloc>
+    RbtreeIter<T, Vcomp, Tree, Alloc> &RbtreeIter<T, Vcomp, Tree, Alloc>::operator++()
     {
         if (_node->_right != NULL)
         {
@@ -73,17 +73,28 @@ namespace ft
         return (*this);
     }
 
-    template <class T, class Vcomp, class Alloc>
-    RbtreeIter<T, Vcomp, Alloc> RbtreeIter<T, Vcomp, Alloc>::operator++(int)
+    template <class T, class Vcomp, class Tree, class Alloc>
+    RbtreeIter<T, Vcomp, Tree, Alloc> RbtreeIter<T, Vcomp, Tree, Alloc>::operator++(int)
     {
-        RbtreeIter<T, Vcomp, Alloc> tmp(*this);
+        RbtreeIter<T, Vcomp, Tree, Alloc> tmp(*this);
         ++(*this);
         return (tmp);
     }
 
-    template <class T, class Vcomp, class Alloc>
-    RbtreeIter<T, Vcomp, Alloc> &RbtreeIter<T, Vcomp, Alloc>::operator--()
+    template <class T, class Vcomp, class Tree, class Alloc>
+    RbtreeIter<T, Vcomp, Tree, Alloc> &RbtreeIter<T, Vcomp, Tree, Alloc>::operator--()
     {
+        // check if this is end
+
+        if (*this == _tree->end())
+        {
+            _node = _tree->root();
+            while (_node->_right != NULL)
+                _node = _node->_right;
+            return (*this);
+        }
+        if (_node == NULL)
+            return (*this);
         if (_node->_left != NULL)
         {
             _node = _node->_left;
@@ -99,32 +110,39 @@ namespace ft
         return (*this);
     }
 
-    template <class T, class Vcomp, class Alloc>
-    RbtreeIter<T, Vcomp, Alloc> RbtreeIter<T, Vcomp, Alloc>::operator--(int)
+    template <class T, class Vcomp, class Tree, class Alloc>
+    RbtreeIter<T, Vcomp, Tree, Alloc> RbtreeIter<T, Vcomp, Tree, Alloc>::operator--(int)
     {
-        RbtreeIter<T, Vcomp, Alloc> tmp(*this);
+        std::cout << "operator--" << std::endl;
+        RbtreeIter<T, Vcomp, Tree, Alloc> tmp(*this);
         --(*this);
         return (tmp);
     }
 
     //COMPARISON OPERATORS
-    template <class T, class Vcomp, class Alloc>
-    bool RbtreeIter<T, Vcomp, Alloc>::operator==(const RbtreeIter<T, Vcomp, Alloc> &other) const
+    template <class T, class Vcomp, class Tree, class Alloc>
+    bool RbtreeIter<T, Vcomp, Tree, Alloc>::operator==(const RbtreeIter<T, Vcomp, Tree, Alloc> &other) const
     {
         return (_node == other._node);
     }
 
-    template <class T, class Vcomp, class Alloc>
-    bool RbtreeIter<T, Vcomp, Alloc>::operator!=(const RbtreeIter<T, Vcomp, Alloc> &other) const
+    template <class T, class Vcomp, class Tree, class Alloc>
+    bool RbtreeIter<T, Vcomp, Tree, Alloc>::operator!=(const RbtreeIter<T, Vcomp, Tree, Alloc> &other) const
     {
         return (_node != other._node);
     }
 
     //GETTERS
-    template <class T, class Vcomp, class Alloc>
-    TreeNode<T, Vcomp, Alloc> *RbtreeIter<T, Vcomp, Alloc>::getNode() const
+    template <class T, class Vcomp, class Tree, class Alloc>
+    TreeNode<T, Vcomp, Alloc> *RbtreeIter<T, Vcomp, Tree, Alloc>::getNode() const
     {
         return (_node);
+    }
+
+    template <class T, class Vcomp, class Tree, class Alloc>
+    Tree *RbtreeIter<T, Vcomp, Tree, Alloc>::getTree() const
+    {
+        return (_tree);
     }
 
 }

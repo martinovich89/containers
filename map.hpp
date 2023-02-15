@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <sstream>
 #include <functional>
-#include "vector_iterator.hpp"
+// #include "vector_iterator.hpp"
 #include "reverse_iterator.hpp"
 #include "is_integral.hpp"
 #include "rbtree.hpp"
@@ -37,8 +37,9 @@ namespace ft
 			typedef typename allocator_type::pointer							pointer;
 			typedef typename allocator_type::const_pointer						const_pointer;
 			// iterator typedefs taking rbtree as a base
-			typedef ft::RbtreeIter<value_type, value_compare, allocator_type>			iterator;
-			typedef ft::RbtreeIter<const value_type, value_compare, allocator_type>	const_iterator;
+			typedef ft::RbtreeIter<value_type, value_compare, Rbtree<value_type, value_compare, allocator_type>, allocator_type>			iterator;
+			typedef ft::RbtreeConstIter<value_type, value_compare, Rbtree<value_type, value_compare, allocator_type>, allocator_type>		const_iterator;
+			// typedef ft::RbtreeIter<const value_type, value_compare, allocator_type>	const_iterator;
 			typedef ft::reverse_iterator<iterator>								reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>						const_reverse_iterator;
 			typedef ptrdiff_t													difference_type;
@@ -67,7 +68,7 @@ namespace ft
 			// ATTRIBUTES
 			key_compare _comp;
 			value_compare _vcomp;
-			Rbtree<key_type, value_type, value_compare, allocator_type>	_tree;
+			Rbtree<value_type, value_compare, allocator_type>	_tree;
 	
 		public :
 			// CONSTRUCTORS
@@ -93,6 +94,12 @@ namespace ft
 			const_reverse_iterator rbegin() const;
 			reverse_iterator rend();
 			const_reverse_iterator rend() const;
+			iterator lower_bound( const Key& key );
+			const_iterator lower_bound( const Key& key ) const;
+			iterator upper_bound( const Key& key );
+			const_iterator upper_bound( const Key& key ) const;
+			ft::pair<iterator,iterator> equal_range( const Key& key );
+			ft::pair<const_iterator,const_iterator> equal_range( const Key& key ) const;
 
 			// CAPACITY
 			bool empty() const;
@@ -107,7 +114,7 @@ namespace ft
 			const mapped_type &at(const key_type &k) const;
 
 			// MODIFIERS
-			typename ft::pair<iterator, bool> insert(const value_type &val);
+			pair<iterator, bool> insert(const value_type &val);
 			iterator insert(iterator position, const value_type &val);
 			template <class InputIterator>
 			void insert(InputIterator first, InputIterator last);

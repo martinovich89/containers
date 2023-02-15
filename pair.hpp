@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <sstream>
 #include <algorithm>
-#include "vector_iterator.hpp"
+// #include "vector_iterator.hpp"
 #include "reverse_iterator.hpp"
 #include "is_integral.hpp"
 

@@ -9,6 +9,9 @@
 // #include "map.hpp"
 // #include "pair.hpp"
 
+#define BLACK 0
+#define RED 1
+
 namespace ft
 {
 	template < class T, class Vcomp, class Alloc = std::allocator<T> >
@@ -28,6 +31,7 @@ namespace ft
 			TreeNode	*_right;
 			TreeNode	*_parent;
 			bool		_color;
+			// Tree *_tree;
 	};
 
 	// template < class T, class Vcomp, class Alloc = std::allocator<T> >
@@ -56,7 +60,7 @@ namespace ft
 	a: T, Vcomp, Alloc
 	*/
 
-	template < class T, class Vcomp, class Alloc = std::allocator<T> >
+	template < class T, class Vcomp, class Tree, class Alloc = std::allocator<T> >
 	class RbtreeIter
 	{
 		public :
@@ -68,7 +72,7 @@ namespace ft
 
 			RbtreeIter();
 			RbtreeIter(const pointer ptr);
-			RbtreeIter(TreeNode<T, Vcomp, Alloc> *node);
+			RbtreeIter(TreeNode<T, Vcomp, Alloc> *node, Tree *tree);
 			RbtreeIter(const RbtreeIter &other);
 			~RbtreeIter();
 			RbtreeIter &operator=(const RbtreeIter &other);
@@ -83,26 +87,28 @@ namespace ft
 			bool operator!=(const RbtreeIter &other) const;
 
 			TreeNode<T, Vcomp, Alloc> *getNode() const;
+			Tree *getTree() const;
 
 		private :
 			TreeNode<T, Vcomp, Alloc> *_node;
+			Tree *_tree;
 
 	};
 
-	template < class T, class Vcomp, class Alloc = std::allocator<T> >
+	template < class T, class Vcomp, class Tree, class Alloc = std::allocator<T> >
 	class RbtreeConstIter
 	{
 		public :
-			typedef T value_type;
-			typedef T& reference;
-			typedef T* pointer;
+			typedef const T value_type;
+			typedef const T& reference;
+			typedef const T* pointer;
 			typedef std::ptrdiff_t difference_type;
 			typedef std::bidirectional_iterator_tag iterator_category;
 
 			RbtreeConstIter();
-			RbtreeConstIter(const pointer node);
-			RbtreeConstIter(const TreeNode<T, Vcomp, Alloc> *node);
-			RbtreeConstIter(const RbtreeIter<T, Vcomp, Alloc> &other);
+			RbtreeConstIter(const pointer _data);
+			RbtreeConstIter(const TreeNode<T, Vcomp, Alloc> *node, const Tree *tree);
+			RbtreeConstIter(const RbtreeIter<T, Vcomp, Tree, Alloc> &other);
 			RbtreeConstIter(const RbtreeConstIter &other);
 			~RbtreeConstIter();
 			RbtreeConstIter &operator=(const RbtreeConstIter &other);
@@ -116,26 +122,29 @@ namespace ft
 			bool operator==(const RbtreeConstIter &other) const;
 			bool operator!=(const RbtreeConstIter &other) const;
 
+			const TreeNode<T, Vcomp, Alloc> *getNode() const;
+			const Tree *getTree() const;
+
 		private :
-			TreeNode<T, Vcomp, Alloc> *_node;
+			const TreeNode<T, Vcomp, Alloc> *_node;
+			const Tree *_tree;
 	};
 
-	template < class Key, class T, class Vcomp = std::less<T>, class Alloc = std::allocator<T> >
+	template < class T, class Vcomp, class Alloc = std::allocator<T> >
 	class Rbtree
 	{
 		public :
 			typedef ft::TreeNode<T, Vcomp, Alloc> node;
-			typedef ft::RbtreeIter<T, Vcomp, Alloc> iterator;
-			typedef ft::RbtreeConstIter<T, Vcomp, Alloc> const_iterator;
+			typedef ft::RbtreeIter<T, Vcomp, Rbtree, Alloc> iterator;
+			typedef ft::RbtreeConstIter<T, Vcomp, Rbtree, Alloc> const_iterator;
 			typedef size_t size_type;
-			typedef Key key_type;
 			typedef T value_type;
 			typedef T& reference;
 			typedef T* pointer;
 
 
-			Rbtree(const Vcomp &comp);
-			// Rbtree(const Vcomp &comp, const Alloc &alloc = Alloc());
+			// Rbtree(const Vcomp &comp);
+			Rbtree(const Vcomp &comp, const Alloc &alloc = Alloc());
 			~Rbtree();
 			Rbtree(const Rbtree &other);
 			Rbtree &operator=(const Rbtree &other);
@@ -150,9 +159,10 @@ namespace ft
 			void clear(node *node);
 
 			// ACCESS ELEMENTS
-			node &root() const;
-			Vcomp &comp() const;
+			node *root() const;
+			const Vcomp &comp() const;
 			size_type	size() const;
+			size_type max_size() const;
 
 			node *find_node(const T &value) const;
 			// node *find_node(const T &value) const;
@@ -161,14 +171,15 @@ namespace ft
 			node *add_node(node *new_node);
 			// void add_node(node *current, node *other);
 			void delete_node(const T &data);
-			void delete_node(iterator it);
+			// void delete_node(iterator it);
+			void delete_node(node *current);
 			void delete_range(iterator first, iterator last);
 
 		private :
 			Vcomp		_comp;
-			node		*_root;
 			size_type	_size;
 			Alloc 		_alloc;
+			node		*_root;
 
 			node *minimum(node *current);
 			node *maximum(node *current);
