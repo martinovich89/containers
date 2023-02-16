@@ -3,7 +3,7 @@ namespace ft
 	template < class T, class Vcomp, class Alloc >
 	Rbtree<T, Vcomp, Alloc>::Rbtree(const Vcomp &comp, const Alloc &alloc) : _comp(comp), _size(0), _alloc(alloc), _root()
 	{
-		
+		// std::cout << "_root pointer after initialization: " << _root << std::endl;
 	}
 
 	// template < class T, class Vcomp, class Alloc >

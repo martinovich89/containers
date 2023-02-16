@@ -91,6 +91,12 @@ namespace ft
     RbtreeConstIter<T, Vcomp, Tree, Alloc> &RbtreeConstIter<T, Vcomp, Tree, Alloc>::operator--()
     {
         // std::cout << "&operator--" << std::endl;
+        if (_node == _tree->begin().getNode())
+        {
+            _node = NULL;
+            return (*this);
+        }
+        // std::cout << "not begin" << std::endl;
         if (_node->_left)
         {
             _node = _node->_left;

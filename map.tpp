@@ -276,7 +276,7 @@ namespace ft
 
 	template <class Key, class T, class Compare, class Alloc>
 	template <class InputIterator>
-	void map<Key, T, Compare, Alloc>::insert(InputIterator first, InputIterator last)
+	void map<Key, T, Compare, Alloc>::(InputIterator first, InputIterator last)
 	{
 		for (; first != last; ++first)
 			insert(*first);
