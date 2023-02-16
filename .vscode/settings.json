@@ -52,6 +52,8 @@
 		"complex": "cpp",
 		"cstring": "cpp",
 		"span": "cpp",
-		"cinttypes": "cpp"
+		"cinttypes": "cpp",
+		"list": "cpp",
+		"set": "cpp"
 	}
 }

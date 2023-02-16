@@ -113,7 +113,7 @@ namespace ft
     template <class T, class Vcomp, class Tree, class Alloc>
     RbtreeIter<T, Vcomp, Tree, Alloc> RbtreeIter<T, Vcomp, Tree, Alloc>::operator--(int)
     {
-        std::cout << "operator--" << std::endl;
+        // std::cout << "operator--" << std::endl;
         RbtreeIter<T, Vcomp, Tree, Alloc> tmp(*this);
         --(*this);
         return (tmp);

@@ -174,15 +174,17 @@ namespace ft
 
 	// add_node function
 	template < class T, class Vcomp, class Alloc >
-	typename Rbtree<T, Vcomp, Alloc>::node *Rbtree<T, Vcomp, Alloc>::add_node(node *new_node)
+	pair<typename Rbtree<T, Vcomp, Alloc>::iterator, bool> Rbtree<T, Vcomp, Alloc>::add_node(node *new_node)
 	{
 		if (_root == NULL)
 		{
 			_root = new_node;
 			_root->_color = false;
 			_size++;
-			return  NULL;
+			return (pair<iterator, bool>(iterator(_root, this), true));
 		}
+		if (find_node(new_node->_data) != NULL)
+			return (pair<iterator, bool>(iterator(find_node(new_node->_data), this), false));
 		node *current = _root;
 		while (current != NULL)
 		{
@@ -209,30 +211,39 @@ namespace ft
 		}
 		_size++;
 		rebalance(new_node);
-		return (new_node);
+		return (pair<iterator, bool>(iterator(new_node, this), true));
 	}
 
 	// // add_node function using T data
-	template < class T, class Vcomp, class Alloc >
-	typename Rbtree<T, Vcomp, Alloc>::node *Rbtree<T, Vcomp, Alloc>::add_node(const T &data)
-	{
-		// std::cout << "LOL" << std::endl;
-		typename Alloc::template rebind<node>::other allocator;
-		node *new_node = allocator.allocate(1);
-		allocator.construct(new_node, data);
-		add_node(new_node);
-		return new_node;
-	}
+	// template < class T, class Vcomp, class Alloc >
+	// pair<typename Rbtree<T, Vcomp, Alloc>::iterator, bool> Rbtree<T, Vcomp, Alloc>::add_node(const T &data)
+	// {
+	// 	typename Alloc::template rebind<node>::other allocator;
+	// 	node *new_node = allocator.allocate(1);
+	// 	allocator.construct(new_node, data);
+	// 	return add_node(new_node);
+	// }
 
 	template < class T, class Vcomp, class Alloc >
-	typename Rbtree<T, Vcomp, Alloc>::iterator Rbtree<T, Vcomp, Alloc>::add_node(const T &data, const void *hint)
+	pair<typename Rbtree<T, Vcomp, Alloc>::iterator, bool> Rbtree<T, Vcomp, Alloc>::add_node(const T &data, const void *hint)
 	{
 		typename Alloc::template rebind<node>::other allocator;
+		if (hint == NULL)
+			hint = _root;
 		node *new_node = allocator.allocate(1, hint);
 		allocator.construct(new_node, data);
-		add_node(new_node);
-		return iterator(new_node, this);
+		return add_node(new_node);
 	}
+
+	// template < class T, class Vcomp, class Alloc >
+	// typename Rbtree<T, Vcomp, Alloc>::iterator Rbtree<T, Vcomp, Alloc>::add_node(const T &data, const void *hint)
+	// {
+	// 	typename Alloc::template rebind<node>::other allocator;
+	// 	node *new_node = allocator.allocate(1, hint);
+	// 	allocator.construct(new_node, data);
+	// 	add_node(new_node);
+	// 	return iterator(new_node, this);
+	// }
 
 	// begin and end
 	template < class T, class Vcomp, class Alloc >
@@ -516,5 +527,4 @@ namespace ft
 	{
 		return (_alloc.max_size());
 	}
-
 }

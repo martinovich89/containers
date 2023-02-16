@@ -85,6 +85,15 @@ namespace ft
 			// OPERATORS
 			map &operator=(const map &x);
 
+			// Relational operators
+			bool operator==(const map &x) const;
+			bool operator!=(const map &x) const;
+			bool operator<(const map &x) const;
+			bool operator<=(const map &x) const;
+			bool operator>(const map &x) const;
+			bool operator>=(const map &x) const;
+			
+
 			// ITERATORS
 			iterator begin();
 			const_iterator begin() const;

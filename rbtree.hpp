@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <functional>
 #include "pair.hpp"
+#include "map.hpp"
 // #include "iterator_traits.hpp"
 // #include "map.hpp"
 // #include "pair.hpp"
@@ -166,14 +167,18 @@ namespace ft
 
 			node *find_node(const T &value) const;
 			// node *find_node(const T &value) const;
-			node *add_node(const T &data);
-			iterator add_node(const T &data, const void *hint);
-			node *add_node(node *new_node);
+			// node *add_node(const T &data);
+			// pair<iterator, bool> add_node(const T &data);
+			// iterator add_node(const T &data, const void *hint);
+			pair<iterator, bool> add_node(const T &data, const void *hint = NULL);
+			pair<iterator, bool> add_node(node *new_node);
 			// void add_node(node *current, node *other);
 			void delete_node(const T &data);
 			// void delete_node(iterator it);
 			void delete_node(node *current);
 			void delete_range(iterator first, iterator last);
+
+
 
 		private :
 			Vcomp		_comp;
@@ -189,6 +194,75 @@ namespace ft
 			void rotate_right(node *node);
 			void rebalance(node *current);
 	};
+
+	// equal
+	template <class InputIterator1, class InputIterator2>
+	bool	equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
+	{
+		while (first1 != last1)
+		{
+			if (!(*first1 == *first2))
+				return false;
+			++first1;
+			++first2;
+		}
+		return true;
+	}
+
+	// lexicographical_compare
+	template <class InputIterator1, class InputIterator2>
+	bool	lexicographical_compare(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2)
+	{
+		while (first1 != last1)
+		{
+			if (first2 == last2 || *first2 < *first1)
+				return false;
+			else if (*first1 < *first2)
+				return true;
+			++first1;
+			++first2;
+		}
+		return (first2 != last2);
+	}
+
+
+	// relational operators
+	template <class T, class Vcomp, class Alloc>
+	bool	operator ==(const Rbtree<T, Vcomp, Alloc > &lhs, const ft::Rbtree<T, Vcomp, Alloc > &rhs)
+	{
+		return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+	}
+	
+	template <class T, class Vcomp, class Alloc>
+	bool	operator <(const Rbtree<T, Vcomp, Alloc > &lhs, const ft::Rbtree<T, Vcomp, Alloc > &rhs)
+	{
+		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+	}
+	
+	template <class T, class Vcomp, class Alloc>
+	bool	operator !=(const Rbtree<T, Vcomp, Alloc > &lhs, const ft::Rbtree<T, Vcomp, Alloc > &rhs)
+	{
+		return !(lhs == rhs);
+	}
+	
+	template <class T, class Vcomp, class Alloc>
+	bool	operator <=(const Rbtree<T, Vcomp, Alloc > &lhs, const ft::Rbtree<T, Vcomp, Alloc > &rhs)
+	{
+		return lhs < rhs || lhs == rhs;
+	}
+	
+	template <class T, class Vcomp, class Alloc>
+	bool	operator >(const Rbtree<T, Vcomp, Alloc > &lhs, const ft::Rbtree<T, Vcomp, Alloc > &rhs)
+	{
+		return !(lhs <= rhs);
+	}
+	
+	template <class T, class Vcomp, class Alloc>
+	bool	operator >=(const Rbtree<T, Vcomp, Alloc > &lhs, const ft::Rbtree<T, Vcomp, Alloc > &rhs)
+	{
+		return !(lhs < rhs);
+	}
+
 }
 
 #include "rbtree.tpp"

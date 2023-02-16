@@ -47,6 +47,43 @@ namespace ft
 		return (*this);
 	}
 
+	// Relational operators
+	template <class Key, class T, class Compare, class Alloc>
+	bool map<Key, T, Compare, Alloc>::operator==(const map &x) const
+	{
+		return (_tree == x._tree);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool map<Key, T, Compare, Alloc>::operator!=(const map &x) const
+	{
+		return (_tree != x._tree);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool map<Key, T, Compare, Alloc>::operator<(const map &x) const
+	{
+		return (_tree < x._tree);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool map<Key, T, Compare, Alloc>::operator<=(const map &x) const
+	{
+		return (_tree <= x._tree);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool map<Key, T, Compare, Alloc>::operator>(const map &x) const
+	{
+		return (_tree > x._tree);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool map<Key, T, Compare, Alloc>::operator>=(const map &x) const
+	{
+		return (_tree >= x._tree);
+	}
+
 	// ITERATORS
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::iterator map<Key, T, Compare, Alloc>::begin()
@@ -75,7 +112,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::reverse_iterator map<Key, T, Compare, Alloc>::rbegin()
 	{
-
+		return reverse_iterator(_tree.end());
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -226,9 +263,8 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename ft::pair< typename map<Key, T, Compare, Alloc>::iterator, bool> map<Key, T, Compare, Alloc>::insert(const typename map<Key, T, Compare, Alloc>::value_type &val)
 	{
-		// use the Rbtree add_node function
-		iterator it(_tree.add_node(val), &_tree);
-		return (ft::pair<iterator, bool> (it, true));
+		// std::cout << "KEK" << std::endl;
+		return (_tree.add_node(val));
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -243,10 +279,7 @@ namespace ft
 	void map<Key, T, Compare, Alloc>::insert(InputIterator first, InputIterator last)
 	{
 		for (; first != last; ++first)
-		{
-			if (find(first->first) == end())
-				insert(*first);
-		}
+			insert(*first);
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
