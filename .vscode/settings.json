@@ -54,6 +54,7 @@
 		"span": "cpp",
 		"cinttypes": "cpp",
 		"list": "cpp",
-		"set": "cpp"
+		"set": "cpp",
+		"fstream": "cpp"
 	}
 }

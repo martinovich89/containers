@@ -44,6 +44,7 @@ namespace ft
     RbtreeConstIter<T, Vcomp, Tree, Alloc> &RbtreeConstIter<T, Vcomp, Tree, Alloc>::operator=(const RbtreeConstIter<T, Vcomp, Tree, Alloc> &other)
     {
         _node = other._node;
+        _tree = other._tree;
         return (*this);
     }
 
@@ -90,13 +91,23 @@ namespace ft
     template <class T, class Vcomp, class Tree, class Alloc>
     RbtreeConstIter<T, Vcomp, Tree, Alloc> &RbtreeConstIter<T, Vcomp, Tree, Alloc>::operator--()
     {
+
         // std::cout << "&operator--" << std::endl;
-        if (_node == _tree->begin().getNode())
+        if (*this == _tree->begin())
         {
-            _node = NULL;
+            return (*this = _tree->end());
+        }
+        // check if this is end
+        if (*this == _tree->end())
+        {
+            _node = _tree->root();
+            while (_node->_right != NULL)
+                _node = _node->_right;
             return (*this);
         }
         // std::cout << "not begin" << std::endl;
+        if (_node == NULL)
+            return (*this);
         if (_node->_left)
         {
             _node = _node->_left;

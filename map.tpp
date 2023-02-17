@@ -271,12 +271,12 @@ namespace ft
 	typename map<Key, T, Compare, Alloc>::iterator map<Key, T, Compare, Alloc>::insert(iterator position, const value_type &val)
 	{
 		//Inserts value in the position as close as possible to the position just prior to pos
-		return (_tree.add_node(val, position.getNode()));		
+		return (_tree.add_node(val, position.getNode()).first);
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	template <class InputIterator>
-	void map<Key, T, Compare, Alloc>::(InputIterator first, InputIterator last)
+	void map<Key, T, Compare, Alloc>::insert(InputIterator first, InputIterator last)
 	{
 		for (; first != last; ++first)
 			insert(*first);
