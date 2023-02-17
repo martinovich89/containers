@@ -21,10 +21,9 @@ namespace ft
     }
 
     template <class T, class Vcomp, class Tree, class Alloc>
-    RbtreeIter<T, Vcomp, Tree, Alloc>::RbtreeIter(const RbtreeIter<T, Vcomp, Tree, Alloc>::pointer ptr)
+    RbtreeIter<T, Vcomp, Tree, Alloc>::RbtreeIter(const RbtreeIter<T, Vcomp, Tree, Alloc>::pointer ptr) : _node(*ptr), _tree(NULL)
     {
-        // make DEEP copy of ptr
-        _node = ptr;
+
     }
 
     //RbtreeIter destructor

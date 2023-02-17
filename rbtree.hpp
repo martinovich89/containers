@@ -177,6 +177,7 @@ namespace ft
 			// void delete_node(iterator it);
 			void delete_node(node *current);
 			void delete_range(iterator first, iterator last);
+			void swap(Rbtree &other);
 
 
 

@@ -124,13 +124,13 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::reverse_iterator map<Key, T, Compare, Alloc>::rend()
 	{
-		return reverse_iterator(NULL);
+		return reverse_iterator(_tree.begin());
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::const_reverse_iterator map<Key, T, Compare, Alloc>::rend() const
 	{
-		return const_reverse_iterator(NULL);
+		return const_reverse_iterator(_tree.begin());
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
@@ -313,7 +313,8 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	void map<Key, T, Compare, Alloc>::swap(map &x)
 	{
-		(void)x;
+		// swap the trees
+		_tree.swap(x._tree);
 	}
 
 	template <class Key, class T, class Compare, class Alloc>

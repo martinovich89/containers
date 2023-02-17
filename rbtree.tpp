@@ -492,7 +492,10 @@ namespace ft
 			color = tmp->_color;
 			child = tmp->_right;
 			if (tmp->_parent == current)
-				child->_parent = tmp;
+			{
+				if (child != NULL)
+    				child->_parent = tmp;
+			}
 			else
 			{
 				transplant(tmp, tmp->_right);
@@ -527,4 +530,16 @@ namespace ft
 	{
 		return (_alloc.max_size());
 	}
+
+	template < class T, class Vcomp, class Alloc >
+	void Rbtree<T, Vcomp, Alloc>::swap(Rbtree<T, Vcomp, Alloc> &x)
+	{
+		node *tmp = _root;
+		_root = x._root;
+		x._root = tmp;
+		size_t tmp_size = _size;
+		_size = x._size;
+		x._size = tmp_size;
+	}
+
 }
