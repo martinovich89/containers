@@ -205,11 +205,20 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	typename map<Key, T, Compare, Alloc>::size_type map<Key, T, Compare, Alloc>::max_size() const
 	{
-		// use rebind to get the allocator type of the node
+		// here are 3 methods :
+		
+		// 1. with allocator.max_size()
 		typedef typename Alloc::template rebind<TreeNode<value_type, value_compare, Alloc> >::other node_allocator;
 		return (node_allocator().max_size());
-		// return (std::numeric_limits<size_type>::max() / (sizeof(TreeNode<value_type, value_compare, Alloc>) * 2));
-		// return _tree.max_size();
+
+		// 2. with numeric_limits
+		// return (std::numeric_limits<size_type>::max() / (sizeof(TreeNode<value_type, value_compare, Alloc>) << 1));
+
+		// 3. with ~0UL
+		// return (static_cast<size_t>(~0) / (sizeof(TreeNode<value_type, value_compare, Alloc>) << 1 ));
+
+		// This one also works for this node size (funny)
+		// return (static_cast<size_t>(~13) / (sizeof(TreeNode<value_type, value_compare, Alloc>) << 1 ));
 	}
 
 	// ELEMENT ACCESS

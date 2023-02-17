@@ -19,7 +19,7 @@ OBJS			=	$(OBJS_FT_DIR)/$(SRCS:.cpp=.o)
 
 OBJS_STL		=	$(OBJS_STL_DIR)/$(SRCS:.cpp=.o)
 
-CXX				=	clang++
+CXX				=	clang++ -diag-color=always
 
 
 CXXFLAGS		=	-g -Wall -Wextra -Werror -std=c++98 #-fsanitize=address -g3
