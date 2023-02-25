@@ -45,12 +45,16 @@ namespace ft
     template <class T, class Vcomp, class Tree, class Alloc>
     typename RbtreeIter<T, Vcomp, Tree, Alloc>::reference RbtreeIter<T, Vcomp, Tree, Alloc>::operator*() const
     {
+        if (_node == NULL)
+            throw std::out_of_range("Iterator is out of range");
         return (_node->_data);
     }
 
     template <class T, class Vcomp, class Tree, class Alloc>
     typename RbtreeIter<T, Vcomp, Tree, Alloc>::pointer RbtreeIter<T, Vcomp, Tree, Alloc>::operator->() const
     {
+        if (_node == NULL)
+            throw std::out_of_range("Iterator is out of range");
         return (&(_node->_data));
     }
     

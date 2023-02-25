@@ -184,7 +184,10 @@ namespace ft
 			return (pair<iterator, bool>(iterator(_root, this), true));
 		}
 		if (find_node(new_node->_data) != NULL)
+		{
+			// _node_alloc.destroy(new_node);
 			return (pair<iterator, bool>(iterator(find_node(new_node->_data), this), false));
+		}
 		node *current = _root;
 		while (current != NULL)
 		{
@@ -230,8 +233,10 @@ namespace ft
 		typename Alloc::template rebind<node>::other allocator;
 		if (hint == NULL)
 			hint = _root;
-		node *new_node = allocator.allocate(1, hint);
-		allocator.construct(new_node, data);
+		if (find_node(data) != NULL)
+			return (pair<iterator, bool>(iterator(find_node(data), this), false));
+		node *new_node = _node_alloc.allocate(1, hint);
+		_node_alloc.construct(new_node, data);
 		return add_node(new_node);
 	}
 

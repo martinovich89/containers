@@ -50,12 +50,22 @@ namespace ft
 		bool empty() const;
 		void reserve (size_type n);
 
+		// RELATIONAL OPERATORS
+
+		bool operator==(const vector &rhs) const;
+		bool operator!=(const vector &rhs) const;
+		bool operator<(const vector &rhs) const;
+		bool operator<=(const vector &rhs) const;
+		bool operator>(const vector &rhs) const;
+		bool operator>=(const vector &rhs) const;
+		
+
 		// ELEMENT ACCESS
 		vector &operator=(const vector &x);
-		reference operator[](size_type n);
-		const_reference operator[](size_type n) const;
-		reference at(size_type n);
-		const_reference at(size_type n) const;
+		reference operator[] (size_type n);
+		const_reference operator[] (size_type n) const;
+		reference at (size_type n);
+		const_reference at (size_type n) const;
 		reference front();
 		const_reference front() const;
     	reference back();
@@ -86,9 +96,6 @@ namespace ft
 		reverse_iterator rend();
 		const_reverse_iterator rend() const;
 
-		// ALLOCATOR
-		allocator_type get_allocator() const;
-
 	private:
 		Alloc		_alloc;
 		size_type	_capacity;
@@ -117,20 +124,6 @@ namespace ft
 			void _assign_range(InputIterator first, InputIterator last);
 		void _assign_size(size_type n, const value_type& val);
 	};
-
-	// RELATIONAL OPERATORS
-	template <class T, class Alloc>
-	bool operator==(const vector<T, Alloc> &rhs, const vector<T, Alloc> &lhs);
-	template <class T, class Alloc>
-	bool operator!=(const vector<T, Alloc> &rhs, const vector<T, Alloc> &lhs);
-	template <class T, class Alloc>
-	bool operator<(const vector<T, Alloc> &rhs, const vector<T, Alloc> &lhs);
-	template <class T, class Alloc>
-	bool operator<=(const vector<T, Alloc> &rhs, const vector<T, Alloc> &lhs);
-	template <class T, class Alloc>
-	bool operator>(const vector<T, Alloc> &rhs, const vector<T, Alloc> &lhs);
-	template <class T, class Alloc>
-	bool operator>=(const vector<T, Alloc> &rhs, const vector<T, Alloc> &lhs);
 }
 
 #include "vector.tpp"

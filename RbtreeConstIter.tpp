@@ -52,12 +52,16 @@ namespace ft
     template <class T, class Vcomp, class Tree, class Alloc>
     typename RbtreeConstIter<T, Vcomp, Tree, Alloc>::reference RbtreeConstIter<T, Vcomp, Tree, Alloc>::operator*() const
     {
+        if (_node == NULL)
+            throw std::out_of_range("RbtreeConstIter: operator*() called on NULL node");
         return (_node->_data);
     }
 
     template <class T, class Vcomp, class Tree, class Alloc>
     typename RbtreeConstIter<T, Vcomp, Tree, Alloc>::pointer RbtreeConstIter<T, Vcomp, Tree, Alloc>::operator->() const
     {
+        if (_node == NULL)
+            throw std::out_of_range("RbtreeConstIter: operator->() called on NULL node");
         return (&(_node->_data));
     }
 

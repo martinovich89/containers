@@ -199,66 +199,59 @@ namespace ft
 	// RELATIONAL OPERATORS
 
 	template < class T, class Alloc >
-	bool vector<T, Alloc>::operator==(const vector &x) const
+	bool operator==(const vector<T, Alloc> &x, const vector<T, Alloc> &y)
 	{
-		if (_size != x._size)
+		if (x.size() != y.size())
 			return (false);
-		for (size_t i = 0; i < _size; i++)
-			if (_data[i] != x._data[i])
+		size_t i = 0;
+		while (i < x.size())
+		{
+			if (x[i] != y[i])
 				return (false);
+			i++;
+		}
 		return (true);
 	}
 
 	template < class T, class Alloc >
-	bool vector<T, Alloc>::operator!=(const vector &x) const
+	bool operator!=(const vector<T, Alloc> &x, const vector<T, Alloc> &y)
 	{
-		return (!(*this == x));
+		return (!(x == y));
 	}
 
 	template < class T, class Alloc >
-	bool vector<T, Alloc>::operator<(const vector &x) const
+	bool operator<(const vector<T, Alloc> &x, const vector<T, Alloc> &y)
 	{
 		size_t i = 0;
-		while (i < _size && i < x._size)
+		while (i < x.size() && i < y.size())
 		{
-			if (_data[i] < x._data[i])
+			if (x[i] < y[i])
 				return (true);
-			else if (_data[i] > x._data[i])
+			else if (x[i] > y[i])
 				return (false);
 			i++;
 		}
-		if (i == _size && i != x._size)
+		if (i == x.size() && i != y.size())
 			return (true);
 		return (false);
 	}
 
 	template < class T, class Alloc >
-	bool vector<T, Alloc>::operator<=(const vector &x) const
+	bool operator<=(const vector<T, Alloc> &x, const vector<T, Alloc> &y)
 	{
-		return (!(*this > x));
+		return (!(y < x));
 	}
 
 	template < class T, class Alloc >
-	bool vector<T, Alloc>::operator>(const vector &x) const
+	bool operator>(const vector<T, Alloc> &x, const vector<T, Alloc> &y)
 	{
-		size_t i = 0;
-		while (i < _size && i < x._size)
-		{
-			if (_data[i] > x._data[i])
-				return (true);
-			else if (_data[i] < x._data[i])
-				return (false);
-			i++;
-		}
-		if (i != _size && i == x._size)
-			return (true);
-		return (false);
+		return (y < x);
 	}
 
 	template < class T, class Alloc >
-	bool vector<T, Alloc>::operator>=(const vector &x) const
+	bool operator>=(const vector<T, Alloc> &x, const vector<T, Alloc>&y)
 	{
-		return (!(*this < x));
+		return (!(x < y));
 	}
 
 	// ELEMENT ACCESS
@@ -660,5 +653,11 @@ namespace ft
 			// std::cout << _size << std::endl;
 			_alloc.destroy(_data + --_size);
 		}
+	}
+
+	template <class T, class Alloc>
+	typename vector<T, Alloc>::allocator_type vector<T, Alloc>::get_allocator() const
+	{
+		return _alloc;
 	}
 }

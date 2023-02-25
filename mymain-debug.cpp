@@ -11,93 +11,125 @@ namespace ft = std;
 #include <string>
 #include <algorithm>
 #include <numeric>
+#include "map.hpp"
+#include "pair.hpp"
 
-int main(void)
+#define map ft::map
+#define pair ft::pair
+#define cout std::cout
+
+
+template <class Key, class T>
+void	print(map<Key, T>& lst)
 {
-    	ft::vector<int> myvector;
-	ft::vector<int>::iterator it;
+	cout << "printing a map : \n";
+	for (typename map<Key, T>::iterator it = lst.begin(); it != lst.end(); it++)
+		cout << it->first << " => " << it->second << '\n';
+}
 
-	// set some values:
-	for (int i=1; i<=5; i++) myvector.push_back(i); // myvector: 1 2 3 4 5
+int main ()
+{
+  map<char,int> foo,bar;
 
-	it = myvector.begin();
-	++it;       // "it" points now to number 2           ^
+  foo['x']=100;
+  foo['y']=200;
 
-	// std::cout << "myvector contains:";
-	// for (it=myvector.begin(); it<myvector.end(); it++)
-	// 	std::cout << ' ' << *it;
-	// std::cout << std::endl;
+  bar['a']=11;
+  bar['b']=22;
+  bar['c']=33;
 
-	myvector.insert (it,10);                        // myvector: 1 10 2 3 4 5
 
-	std::cout << VECTOR_NAME << " contains:";
-	for (it=myvector.begin(); it<myvector.end(); it++)
-		std::cout << ' ' << *it;
-	std::cout << std::endl;
+  map<char, int>::const_iterator tmp = foo.begin(); //tmp iterates through foo
+  map<char, int>::const_iterator tmp2 = bar.begin(); //tmp2 iterates through bar
 
-	// "it" still points to number 2                      ^
-	myvector.insert (it,2,20);                      // myvector: 1 10 20 20 2 3 4 5
+  swap(bar, foo); //tmp iterates through bar
+				//tmp2 iterates through foo
 
-	std::cout << VECTOR_NAME << " contains:";
-	for (it = myvector.begin(); it < myvector.end(); it++)
-		std::cout << ' ' << *it;
-	std::cout << std::endl;
 
-	--it;       // "it" points now to the second 20            ^
+  map<char, int>	other;
 
-	std::cout << VECTOR_NAME << " contains:";
-	for (it = myvector.begin(); it < myvector.end(); it++)
-		std::cout << ' ' << *it;
-	std::cout << std::endl;
+  other['1'] = 73;
+  other['2'] = 173;
+  other['3'] = 763;
+  other['4'] = 73854;
+  other['5'] = 74683;
+  other['6'] = 753;
 
-	std::vector<int> myvector2 (2,30);
-	myvector.insert (it,myvector2.begin(),myvector2.end());
-	// myvector: 1 10 20 30 30 20 2 3 4 5
-	// "it" no longer valid, get a new one:
-	it = myvector.begin();
+  map<char, int>::const_iterator tmp3 = other.begin(); // tmp3 iterates through other
 
-	it += 3;    // "it" points now to number 30                ^
+  cout << "foo contains:\n";
+  for (map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+    cout << it->first << " => " << it->second << '\n';
 
-	std::cout << VECTOR_NAME << " contains:";
-	for (it = myvector.begin(); it < myvector.end(); it++)
-		std::cout << ' ' << *it;
-	std::cout << std::endl;
+  cout << "bar contains:\n";
+  for (map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+    cout << it->first << " => " << it->second << '\n';
 
-    myvector.insert (it, myvector.begin(),myvector.begin()+5);
-	// myvector: 1 10 20 1 10 20 30 30 20 2 3 4 5
-	// "it" no longer valid, get a new one:
-	it = myvector.begin();
+	while(tmp != bar.end())
+	{
+		cout << tmp->first << " => " << tmp->second << '\n';
+		tmp++;
+	}
+	tmp--;
 
-	it += 5;    // "it" points now to number 20                ^
+	while(tmp2 != foo.end())
+	{
+		cout << tmp2->first << " => " << tmp2->second << '\n';
+		tmp2++;
+	}
+	tmp2--;
 
-	myvector.erase (it);
-	// myvector: 1 10 20 1 10 30 30 20 2 3 4 5
-	// "it" no longer valid, get a new one:
-	it = myvector.begin();
+	// swap(other, foo); //tmp2 iterates through other
+	// 				//tmp3 iterates throught foo
+	// print(other);
+	// print(foo);
+	// print(bar);
+	// while(tmp != bar.begin())
+	// {
+	// 	cout << tmp->first << " => " << tmp->second << '\n';
+	// 	tmp--;
+	// }
+	// cout << tmp->first << " => " << tmp->second << '\n';
 
-	it += 6;    // "it" points now to number 30                ^
+	// while(tmp2 != other.begin())
+	// {
+	// 	cout << tmp2->first << " => " << tmp2->second << '\n';
+	// 	tmp2--;
+	// }
+	// cout << tmp2->first << " => " << tmp2->second << '\n';
 
-	myvector.erase (it,it+3);
-	// myvector: 1 10 20 1 10 30 2 3 4 5
-	// "it" no longer valid, get a new one:
-	it = myvector.begin();
+	// while(tmp3 != foo.end())
+	// {
+	// 	cout << tmp3->first << " => " << tmp3->second << '\n';
+	// 	tmp3++;
+	// }
+	// tmp3--;
 
-	it += 5;    // "it" points now to number
+	// swap(bar, foo);
+	// swap(foo, bar);
+	// swap(bar, foo); //tmp3 iterates through bar
+	// 			//tmp iterates through foo
 
-	std::cout << VECTOR_NAME << " contains:";
-	for (it=myvector.begin(); it<myvector.end(); it++)
-		std::cout << ' ' << *it;
-	std::cout << std::endl;
+	// print(other);
+	// print(foo);
+	// print(bar);
 
-    it = myvector.begin();
-	ft::vector<int>::reverse_iterator rit(it);
+	// while(tmp != foo.end())
+	// {
+	// 	cout << tmp->first << " => " << tmp->second << '\n';
+	// 	tmp++;
+	// }
 
-    std::cout << VECTOR_NAME << " contains:";
-	for (rit = myvector.rbegin(); rit < myvector.rend(); rit++)
-    {
-		std::cout << ' ' << *rit;
-    }
-    std::cout << std::endl;
+	// while(tmp2 != other.end())
+	// {
+	// 	cout << tmp2->first << " => " << tmp2->second << '\n';
+	// 	tmp2++;
+	// }
 
-    return (0);
+	// while(tmp3 != bar.begin())
+	// {
+	// 	cout << tmp3->first << " => " << tmp3->second << '\n';
+	// 	tmp3--;
+	// }
+	// cout << tmp3->first << " => " << tmp3->second << '\n';
 }

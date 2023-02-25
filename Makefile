@@ -11,15 +11,16 @@ HEADERS			=	vector.hpp\
 					reverse_iterator.hpp\
 					vector_const_iterator.hpp\
 					vector_iterator.hpp\
-					iterator_traits.hpp
+					iterator_traits.hpp\
+					stack.hpp
 
-SRCS			=	map_main.cpp #mymain.cpp #tree_main.cpp #pair_main.cpp
+SRCS			=	my_super_main.cpp #mymain.cpp #map_main.cpp #tree_main.cpp #pair_main.cpp
 
 OBJS			=	$(OBJS_FT_DIR)/$(SRCS:.cpp=.o)
 
 OBJS_STL		=	$(OBJS_STL_DIR)/$(SRCS:.cpp=.o)
 
-CXX				=	clang++ -diag-color=always
+CXX				=	clang++
 
 
 CXXFLAGS		=	-g -Wall -Wextra -Werror -std=c++98 #-fsanitize=address -g3
